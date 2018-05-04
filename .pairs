@@ -1,0 +1,16 @@
+# .pairs - configuration for 'git pair'
+pairs:
+  # <initials>: <Firstname> <Lastname>[; <email-id>]
+  ck: Conan Kim; crian0121
+  tk: Thesun Kim; thesun4sky
+  ll: Leo Lee; cylee0330
+
+email:
+  domain: gmail.com
+
+email_addresses:
+  ck: crian0121@gmail.com
+  tk: thesun4sky@gmail.com
+  ll: cylee0330@gmail.com
+
+global: false  # Set to true for git-pair to change git configuration for all your projects
