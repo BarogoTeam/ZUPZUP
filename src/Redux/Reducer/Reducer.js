@@ -1,7 +1,8 @@
 import {combineReducers} from "redux";
+import {Movie} from "./Movie";
 
 const Reducer = combineReducers({
-    //상태 그룹이 추가될 때 마다 이곳에 기록
+    Movie
 });
 
 export default Reducer;
