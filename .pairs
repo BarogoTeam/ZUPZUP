@@ -4,6 +4,7 @@ pairs:
   ck: Conan Kim; crian0121
   tk: Thesun Kim; thesun4sky
   ll: Leo Lee; cylee0330
+  ms: Museong Seo; afsdds5
 
 email:
   domain: gmail.com
@@ -12,5 +13,6 @@ email_addresses:
   ck: crian0121@gmail.com
   tk: thesun4sky@gmail.com
   ll: cylee0330@gmail.com
+  ms: afsdds5@gmail.com
 
 global: false  # Set to true for git-pair to change git configuration for all your projects
