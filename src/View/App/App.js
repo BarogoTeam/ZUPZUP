@@ -3,6 +3,7 @@ import Header from './Header';
 import MovieList from './MovieList';
 import Footer from './Footer';
 import './App.css';
+import TestListPage from "../TestListPage/TestListPage";
 
 const newId = () => Date.now();
 
@@ -38,15 +39,17 @@ class App extends Component {
   render() {
     const movies = this.state.movies;
     return (
-        <div className="movie-app">
+        <div id="Main" className="movie-app">
           <Header handleAddMovie={(movieName) => this.handleAddMovie(movieName)}/>
           <MovieList
             movies={movies}
             handleDeleteMovie={movieId=>this.handleDeleteMovie(movieId)}
           />
+          <TestListPage/>
           <Footer/>
         </div>
       )
   }
 }
+
 export default App;
