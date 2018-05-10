@@ -7,16 +7,13 @@ import {putMovieInfo} from "../../Redux/Action/Movie";
 class TestListPage extends Component {
 
     render() {
-        this.props.putMovieInfo({
-            id: 1,
-            reservationState: "OPEN",
-            reservationRate: 5,
-            rivalCount: 10
+        let items = this.props.movies.map((movieInfo) => {
+            return <DefaultListItem key={movieInfo.id} movieInfo={movieInfo}/>
         });
 
         return (
             <div id="TestListPage" className="App">
-                <DefaultListItem movieInfo={this.props.movieInfo}/>
+                {items}
             </div>
         );
     }
@@ -30,7 +27,7 @@ let mapDispatchToProps = (dispatch) => {
 
 let mapStateToProps = (state) => {
     return {
-        movies: state.movies
+        movies: state.Movie.movies
     }
 };
 

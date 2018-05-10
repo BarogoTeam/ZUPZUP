@@ -4,52 +4,53 @@ import MovieList from './MovieList';
 import Footer from './Footer';
 import './App.css';
 import TestListPage from "../TestListPage/TestListPage";
+import connect from "react-redux/es/connect/connect";
+import {putMovieInfo, removeMovieInfo} from "../../Redux/Action/Movie";
 
 const newId = () => Date.now();
 
 class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      movies: [
-          {movieId: 1000, movieName: '어벤져스'},
-          {movieId: 1001, movieName: '데드풀2'},
-          {movieId: 1002, movieName: '앤트맨'}
-      ],
-        editing: null
-    }
-  }
-
   handleAddMovie(movieName){
-    this.setState([...this.state.movies, {
-        movieId: newId(),
-        movieName: movieName
-    }]);
+      this.props.putMovieInfo({
+          id: newId(),
+          name: movieName,
+          reservationState: 'NONE'
+      });
   }
 
   handleDeleteMovie(movieId){
-      const newMovies = [...this.state.movies];
-      const deleteIndex = newMovies.map(v=> v.movieId === movieId);
-      newMovies.splice(deleteIndex, 1);
-      this.setState({
-          movies: newMovies
-      })
+      this.props.removeMovieInfo(movieId);
   }
 
-  render() {
-    const movies = this.state.movies;
-    return (
-        <div id="Main" className="movie-app">
-          <Header handleAddMovie={(movieName) => this.handleAddMovie(movieName)}/>
-          <MovieList
-            movies={movies}
-            handleDeleteMovie={movieId=>this.handleDeleteMovie(movieId)}
-          />
-          <TestListPage/>
-          <Footer/>
-        </div>
-      )
-  }
+    render() {
+        const movies = this.props.movies;
+        return (
+            <div id="Main" className="movie-app">
+                <Header handleAddMovie={(movieName) => this.handleAddMovie(movieName)}/>
+                <MovieList
+                    movies={movies}
+                    handleDeleteMovie={movieId=>this.handleDeleteMovie(movieId)}
+                />
+                <TestListPage/>
+                <Footer/>
+            </div>
+        )
+    }
 }
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        putMovieInfo: (movieInfo) => {dispatch(putMovieInfo(movieInfo))},
+        removeMovieInfo: (movieId) => {dispatch(removeMovieInfo(movieId))}
+    }
+};
+
+let mapStateToProps = (state) => {
+    return {
+        movies: state.Movie.movies
+    }
+};
+
+App = connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default App;
