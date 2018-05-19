@@ -3,9 +3,7 @@ import DefaultListItem from "../../Component/DefaultListItem/DefaultListItem";
 import connect from "react-redux/es/connect/connect";
 import {putMovieInfo} from "../../Redux/Action/Movie";
 
-
 class TestListPage extends Component {
-
     render() {
         let items = this.props.movies.map((movieInfo) => {
             return <DefaultListItem key={movieInfo.id} movieInfo={movieInfo}/>
