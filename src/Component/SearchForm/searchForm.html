@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+			<meta charset="UTF-8">
+			<title>Title of the document</title>
+			<link rel="stylesheet" href="./common.css">
+	</head>
+
+	<body>
+		
+		<div class="container">
+				<div class="wrapper box">
+						<div id="searchForm">	
+								<table id="movieSearchForm">
+									<tr>
+										<td><label for="movieName">영화이름</label></td>
+										<td colspan="4">
+											<select name="movieName" id="movieName">
+												<option value="">어벤져스3</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<label for="theater">상영관</label>
+											<button>+</button>
+										</td>
+										<td>
+											<select name="theaterCompany" id="theaterCompany">
+												<option value="">CGV</option>
+											</select>
+
+										</td>
+										<td>
+											<select name="theaterCity" id="theaterCity">
+												<option value="">온양</option>
+											</select>
+										</td>
+										<td>
+											<select name="theaterPlace" id="theaterPlace">
+												<option value="">월드타워온양온천점</option>
+											</select>
+										</td>
+										<td><button>-</button></td>
+									</tr>
+									<tr>
+										<td><label for="희망시간">희망시간</label></td>
+										<td colspan="5">
+											<select name="movieStartHour" id="movieStartHour">
+												<option value="">17</option>
+											</select>												
+												<span id="simpleText">:</span>
+											<select name="movieStartMin" id="movieStartMin">
+												<option value="">20</option>
+											</select>
+													<span id="simpleText">~</span>	
+											<select name="movieEndHour" id="movieEndHour">
+												<option value="">22</option>
+											</select>		
+													<span id="simpleText">:</span>										
+											<select name="movieEndMin" id="movieEndMin">
+												<option value="">00</option>
+											</select></td> <!-- ~ 문자 하드코딩 -->
+									</tr>
+									<tr><td><label for="ticketQty">희망 매표수</label></td>
+										<td colspan="4"><input type="number" value="" placeholder="0" min="1" required="required">장</td>		
+									</tr>
+									
+									<tr>
+										<td colspan="5"><div class="leftItem"><button>검색</button></div></td>
+									</tr>
+								</table>
+						</div>
+
+				</div>			
+		</div>
+	</body>
+
+</html>
