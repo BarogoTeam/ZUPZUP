@@ -2,7 +2,7 @@ import {combineReducers} from "redux";
 import {Movie} from "./Movie";
 
 const Reducer = combineReducers({
-    Movie
+  Movie
 });
 
 export default Reducer;

@@ -8,24 +8,24 @@ class MovieList extends Component {
   render() {
     const movies = this.props.movies;
     const handleDeleteMovie = this.props.handleDeleteMovie;
-    const movieList = movies.map(({id, name, reservationState }) => {
+    const movieList = movies.map(({ id, name, reservationState }) => {
       return (
-          <Movie key={id}
-            movieId = {id}
-            movieName = {name}
-            done = {reservationState}
-            onDeleteMovie = {() => handleDeleteMovie(id)}
-          />
+        <Movie key={id}
+          movieId={id}
+          movieName={name}
+          done={reservationState}
+          onDeleteMovie={() => handleDeleteMovie(id)}
+        />
       )
     });
 
     return (
-        <div className="movie-app__main">
-          <ul className="movie-list">
-              {movieList}
-          </ul>
-        </div>
-      )
+      <div className="movie-app__main">
+        <ul className="movie-list">
+          {movieList}
+        </ul>
+      </div>
+    )
   }
 }
 export default MovieList;
