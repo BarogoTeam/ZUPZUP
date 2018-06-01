@@ -1,0 +1,14 @@
+.box{
+	padding: 10px;
+	padding-left: 20px; 
+	align-items: center;
+}
+
+.leftItem{
+	float: right; 
+}
+
+table{
+	padding: 10px;
+	border: 1px solid black;
+}
