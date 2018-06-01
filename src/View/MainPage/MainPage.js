@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MovieList from '../App/MovieList';
 import Footer from '../App/Footer';
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import {putMovieInfo, removeMovieInfo} from "../../Redux/Action/Movie";
 
 class MainPage extends Component {

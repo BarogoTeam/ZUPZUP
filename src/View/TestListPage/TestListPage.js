@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import DefaultListItem from "../../Component/DefaultListItem/DefaultListItem";
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import {putMovieInfo} from "../../Redux/Action/Movie";
 
 class TestListPage extends Component {

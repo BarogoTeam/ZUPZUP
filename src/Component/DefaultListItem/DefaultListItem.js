@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import "./DefaultListItem.css"
-import connect from "react-redux/es/connect/connect";
+import "./DefaultListItem.css";
+import { connect } from 'react-redux';
 import {updateMovieInfo} from "../../Redux/Action/Movie";
 
 class DefaultListItem extends Component {
