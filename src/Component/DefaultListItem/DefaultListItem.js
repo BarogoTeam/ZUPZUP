@@ -4,13 +4,17 @@ import { connect } from 'react-redux';
 import {updateMovieInfo} from "../../Redux/Action/Movie";
 
 class DefaultListItem extends Component {
-  render() {
-    let onClickFunc = () => {
-      let newMovieInfo = this.props.movieInfo;
-      newMovieInfo.reservationRate = 50;
-      this.props.updateMovieInfo(newMovieInfo);
-    };
+  constructor() {
+    super();
+    this.handleClickItem = this.handleClickItem.bind(this);
+  }
 
+  handleClickItem() {
+    const { movieInfo } = this.props;
+    this.props.updateMovieInfo({...movieInfo, reservationRate: 50});
+  }
+
+  render() {
     return (
       <div id="ListItem">
         <div className="innerItem" id="imgDiv">
@@ -34,7 +38,7 @@ class DefaultListItem extends Component {
           </div>
         </div>
         <div className="innerItem" id="alarmDiv">
-          <button disabled={this.props.movieInfo.expired} onClick={onClickFunc}>
+          <button disabled={this.props.movieInfo.expired} onClick={this.handleClickItem}>
             RATE UPDATE
           </button>
         </div>
