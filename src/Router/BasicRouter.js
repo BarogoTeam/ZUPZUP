@@ -1,6 +1,6 @@
 import {Route, Switch} from "react-router-dom";
 import React, {Component} from "react";
-import TestListPage from "../View/TestListPage/TestListPage";
+import MoviesPage from "../View/MoviesPage/MoviesPage";
 import MainPage from "../View/MainPage/MainPage";
 
 class BasicRouter extends Component {
@@ -9,7 +9,8 @@ class BasicRouter extends Component {
       <main>
         <Switch>
           <Route exact path="/" component={MainPage} />
-          <Route path="/test" component={TestListPage} />
+          <Route path="/alarms" component={MainPage} />
+          <Route path="/movies" component={MoviesPage} />
         </Switch>
       </main>
     )

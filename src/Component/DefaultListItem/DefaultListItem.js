@@ -1,62 +1,41 @@
 import React, { Component } from 'react';
 import "./DefaultListItem.css";
 import { connect } from 'react-redux';
-import {updateMovieInfo} from "../../Redux/Action/Movie";
+import PropTypes from 'prop-types';
+import * as UI from "semantic-ui-react";
 
 class DefaultListItem extends Component {
-  constructor() {
-    super();
-    this.handleClickItem = this.handleClickItem.bind(this);
-  }
-
-  handleClickItem() {
-    const { movieInfo } = this.props;
-    this.props.updateMovieInfo({...movieInfo, reservationRate: 50});
-  }
-
   render() {
+
+    const {movieInfo} = this.props;
+
     return (
-      <div id="ListItem">
-        <div className="innerItem" id="imgDiv">
-          <img width="100px" src={this.props.movieInfo.img} />
-        </div>
-        <div className="innerItem" id="infoDiv">
-          <div id="title">
-            <header>{this.props.movieInfo.name}</header>
-          </div>
-          <div id="ageInfo">
-            연령 : {this.props.movieInfo.age}
-          </div>
-          <div id="scoreInfo">
-            평점 : {this.props.movieInfo.score}
-          </div>
-          <div id="reservationRateInfo">
-            예매율 : {this.props.movieInfo.reservationRate}
-          </div>
-          <div id="releaseDate">
-            개봉일 : {this.props.movieInfo.date}
-          </div>
-        </div>
-        <div className="innerItem" id="alarmDiv">
-          <button disabled={this.props.movieInfo.expired} onClick={this.handleClickItem}>
-            RATE UPDATE
-          </button>
-        </div>
-      </div>
-    );
+      <UI.Item>
+        <UI.Item.Image size='large' src={movieInfo.img} />
+
+        <UI.Item.Content>
+          <UI.Item.Header>{movieInfo.name}</UI.Item.Header>
+          <UI.Item.Extra>
+
+            <UI.Label>{movieInfo.age}</UI.Label>
+            <UI.Label>{movieInfo.score}</UI.Label>
+            <UI.Label>{movieInfo.reservationRate}</UI.Label>
+            <UI.Label>{movieInfo.date}</UI.Label>
+          </UI.Item.Extra>
+        </UI.Item.Content>
+      </UI.Item>
+    )
   }
 }
 
-let mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   return {
     movies: state.Movie.movies
   }
 };
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    updateMovieInfo: (movieInfo) => {dispatch(updateMovieInfo(movieInfo))}
-  }
+DefaultListItem.propTypes = {
+  movieInfo: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultListItem);
+export default connect(mapStateToProps)(DefaultListItem);

@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
-import Header from './Header';
+import React from 'react';
 import BasicRouter from "../../Router/BasicRouter";
+import Layout from "../../Component/Layout/Layout";
 
-
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
-      <div>
-        <Header />
+      <Layout>
         <BasicRouter />
-      </div>
+      </Layout>
     )
   }
 }
