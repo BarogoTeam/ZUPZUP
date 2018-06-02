@@ -6,11 +6,35 @@ import PropTypes from "prop-types";
 
 export default class Layout extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      activeMenu: null
+    };
+    this.activateMenu = this.activateMenu.bind(this);
+  }
+
+  activateMenu(menu) {
+    this.setState({
+      activeMenu: menu
+    })
+  }
+
+
   render() {
+    const {activeMenu} = this.state;
+
     return (
       <div>
-        <NavBar activeItem={'sign-in'} /> {/* use state */}
-        <UI.Sidebar as={UI.Menu} width='thin' icon='labeled' visible vertical inverted>
+        <UI.Sidebar
+          as={UI.Menu}
+          animation='push'
+          width='thin'
+          icon='labeled'
+          vertical
+          inverted
+          visible={activeMenu === 'left'}
+        >
           <UI.Menu.Item name='home'>
             <UI.Icon name='home' />
             Home
@@ -32,9 +56,21 @@ export default class Layout extends React.Component {
             </Link>
           </UI.Menu.Item>
         </UI.Sidebar>
-        <UI.Segment basic>
-          {this.props.children}
-        </UI.Segment>
+        <UI.Dimmer.Dimmable blurring dimmed={activeMenu !== null}>
+          <NavBar
+            activeItem={'sign-in'}
+            activateMenu={this.activateMenu}
+          />
+          <UI.Segment style={{marginTop: '40px'}}>
+            {this.props.children}
+          </UI.Segment>
+          <UI.Dimmer
+            inverted
+            active={activeMenu !== null}
+            style={{zIndex: 101}}
+            onClick={() => {this.activateMenu(null)}}
+          />
+        </UI.Dimmer.Dimmable>
       </div>
     )
   }

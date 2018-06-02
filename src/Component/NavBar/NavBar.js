@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 
 export default class NavBar extends React.Component {
   render() {
-    const {activeItem} = this.props;
+    const {activeItem, activateMenu} = this.props;
     return (
-      <UI.Menu fixed>
-        <UI.Menu.Item>
-          <img src='/logo.png' />
+      <UI.Menu fixed='top'>
+        <UI.Menu.Item
+          onClick={() => {activateMenu('left')}}
+        >
+          <img src='/resources/SAMPLE_IMAGE.JPG' />
         </UI.Menu.Item>
 
         <UI.Menu.Item
@@ -30,7 +32,7 @@ export default class NavBar extends React.Component {
         <UI.Menu.Item
           name='sign-in'
           active={activeItem === 'sign-in'}
-          onClick={this.handleItemClick}
+          onClick={() => {activateMenu('right')}}
           position='right'
         >
           Sign-in
@@ -42,4 +44,5 @@ export default class NavBar extends React.Component {
 
 NavBar.propTypes = {
   activeItem: PropTypes.oneOf(['features', 'testimonials', 'sign-in']),
+  activateMenu: PropTypes.func.isRequired
 };
