@@ -44,13 +44,13 @@ export default class Layout extends React.Component {
             Games
           </UI.Menu.Item>
           <UI.Menu.Item name='alarms'>
-            <Link to="/alarms">
+            <Link to="/alarms" onClick={() => {this.activateMenu(null)}}>
               <UI.Icon name='camera' />
               Alarms
             </Link>
           </UI.Menu.Item>
           <UI.Menu.Item name='movies'>
-            <Link to="/movies">
+            <Link to="/movies" onClick={() => {this.activateMenu(null)}}>
               <UI.Icon name='camera' />
               Movies
             </Link>
