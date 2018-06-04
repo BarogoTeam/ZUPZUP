@@ -43,18 +43,18 @@ export default class Layout extends React.Component {
             <UI.Icon name='gamepad' />
             Games
           </UI.Menu.Item>
-          <UI.Menu.Item name='alarms'>
-            <Link to="/alarms" onClick={() => {this.activateMenu(null)}}>
+          <Link to="/alarms" onClick={() => {this.activateMenu(null)}}>
+            <UI.Menu.Item name='alarms'>
               <UI.Icon name='camera' />
               Alarms
-            </Link>
-          </UI.Menu.Item>
-          <UI.Menu.Item name='movies'>
-            <Link to="/movies" onClick={() => {this.activateMenu(null)}}>
+            </UI.Menu.Item>
+          </Link>
+          <Link to="/movies" onClick={() => {this.activateMenu(null)}}>
+            <UI.Menu.Item name='movies'>
               <UI.Icon name='camera' />
               Movies
-            </Link>
-          </UI.Menu.Item>
+            </UI.Menu.Item>
+          </Link>
         </UI.Sidebar>
         <UI.Dimmer.Dimmable blurring dimmed={activeMenu !== null}>
           <NavBar
