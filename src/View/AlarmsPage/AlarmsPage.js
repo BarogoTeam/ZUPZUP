@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import * as UI from 'semantic-ui-react';
+import {Link} from "react-router-dom";
 import AlarmListItem from '../../Component/AlarmListItem/AlarmListItem';
 
-const alarms = [{
+const alarms = [
+  {
     img: "resources/SAMPLE_IMAGE.JPG",
     name: "어벤져스 인피니티워",
     cinemaNames: ["가산디지털단지", "용아맥", "롯데월드점"],
@@ -14,7 +16,7 @@ const alarms = [{
     weekDays: [1, 5, 6],
     reservationNumber: 1,
     isRun: true
-},{
+  },{
     img: "resources/SAMPLE_IMAGE.JPG",
     name: "데드풀2 번역가 갓",
     cinemaNames: ["가산디지털단지", "용아맥", "롯데월드점"],
@@ -26,7 +28,7 @@ const alarms = [{
     weekDays: [2, 3, 4],
     reservationNumber: 6,
     isRun: true
-},{
+  },{
     img: "resources/SAMPLE_IMAGE.JPG",
     name: "어벤져스 베리의탄생",
     cinemaNames: ["롯데월드점"],
@@ -38,11 +40,10 @@ const alarms = [{
     weekDays: [1, 5],
     reservationNumber: 2,
     isRun: false
-}
+  }
 ]
 
 class AlarmsPage extends Component {
-    
   render() {
     return (
       <div>
@@ -53,8 +54,9 @@ class AlarmsPage extends Component {
             )
           }
         </UI.Item.Group>
-        <button class="fluid ui basic button"><i class="plus icon"></i></button>
-
+        <Link to="/alarms/new">
+          <button className="fluid ui basic button"><i className="plus icon" /></button>
+        </Link>
       </div>
     );
   }

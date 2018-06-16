@@ -10,7 +10,7 @@ export default class NavBar extends React.Component {
         <UI.Menu.Item
           onClick={() => {activateMenu('left')}}
         >
-          <img src='/resources/SAMPLE_IMAGE.JPG' />
+          <img src='/resources/SAMPLE_IMAGE.JPG' alt="LOGO" />
         </UI.Menu.Item>
 
         <UI.Menu.Item
