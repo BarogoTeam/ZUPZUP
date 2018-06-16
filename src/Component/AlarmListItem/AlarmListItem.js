@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import * as UI from "semantic-ui-react";
 
 class AlarmListItem extends Component {
-  alarmInfo = this.props.alarmInfo;
+  alarmInfo = this.props.alarmInfo
   state = {isRun: this.alarmInfo.isRun}
 
   toggleRunMode = () => {
     this.setState({isRun: !this.state.isRun})
-  };
+  }
 
   render() {
     const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
