@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import * as UI from 'semantic-ui-react';
 import {Link} from "react-router-dom";
 import AlarmListItem from '../../Component/AlarmListItem/AlarmListItem';
 
 const alarms = [
   {
-    img: "resources/SAMPLE_IMAGE.JPG",
+    img: "/resources/SAMPLE_IMAGE.JPG",
     name: "어벤져스 인피니티워",
     cinemaNames: ["가산디지털단지", "용아맥", "롯데월드점"],
     cinemaTypes: ["2D", "3D", "IMAX"],
@@ -17,7 +17,7 @@ const alarms = [
     reservationNumber: 1,
     isRun: true
   },{
-    img: "resources/SAMPLE_IMAGE.JPG",
+    img: "/resources/SAMPLE_IMAGE.JPG",
     name: "데드풀2 번역가 갓",
     cinemaNames: ["가산디지털단지", "용아맥", "롯데월드점"],
     cinemaTypes: ["2D", "3D", "IMAX"],
@@ -29,7 +29,7 @@ const alarms = [
     reservationNumber: 6,
     isRun: true
   },{
-    img: "resources/SAMPLE_IMAGE.JPG",
+    img: "/resources/SAMPLE_IMAGE.JPG",
     name: "어벤져스 베리의탄생",
     cinemaNames: ["롯데월드점"],
     cinemaTypes: ["1D"],
@@ -43,19 +43,21 @@ const alarms = [
   }
 ]
 
-class AlarmsPage extends Component {
+class AlarmsPage extends React.Component {
   render() {
     return (
       <div>
         <UI.Item.Group divided>
           {
             alarms.map((alarmInfo) =>
-              <AlarmListItem key={alarmInfo.id} alarmInfo={alarmInfo} />
+              <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} />
             )
           }
         </UI.Item.Group>
         <Link to="/alarms/new">
-          <button className="fluid ui basic button"><i className="plus icon" /></button>
+          <UI.Button fluid basic>
+            <UI.Icon name="plus" />
+          </UI.Button>
         </Link>
       </div>
     );
