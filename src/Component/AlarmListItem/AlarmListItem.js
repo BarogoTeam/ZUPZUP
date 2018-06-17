@@ -2,7 +2,7 @@ import React from 'react';
 import * as UI from "semantic-ui-react";
 import PropTypes from 'prop-types';
 
-class AlarmListItem extends React.Component {
+class AlarmListItem extends React.PureComponent {
   static propTypes = {
     alarmInfo: PropTypes.object.isRequired,
   }

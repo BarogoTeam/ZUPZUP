@@ -43,7 +43,7 @@ const alarms = [
   }
 ]
 
-class AlarmsPage extends React.Component {
+class AlarmsPage extends React.PureComponent {
   render() {
     return (
       <div>

@@ -4,7 +4,7 @@ import NavBar from '../NavBar/NavBar'
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 
-export default class Layout extends React.Component {
+export default class Layout extends React.PureComponent {
 
   constructor() {
     super();
