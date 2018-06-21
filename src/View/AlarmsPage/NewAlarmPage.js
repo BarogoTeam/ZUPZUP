@@ -1,6 +1,5 @@
 import React from 'react';
 import * as UI from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import {CINEMAS} from '../../Constants';
