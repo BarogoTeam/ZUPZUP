@@ -4,22 +4,24 @@ import _ from 'lodash';
 
 import {CINEMAS} from '../../Constants';
 import CinemaModal from './CinemaModal';
+import {BACKEND_URL} from "../../index";
 
-const PeopleCountModal = () => (
+const PeopleCountModal = (props) => (
   <UI.Modal trigger={<UI.Button color="teal" fluid circular>인원수 선택</UI.Button>}>
     <UI.Modal.Header>Select a Photo</UI.Modal.Header>
     <UI.Modal.Content>
-      <UI.Modal.Description>
-        <UI.Modal.Header>인원수 선택</UI.Modal.Header>
-      </UI.Modal.Description>
+      <UI.Input
+        label={{ basic: true, content: '명' }}
+        labelPosition='right'
+      />
     </UI.Modal.Content>
     <UI.Modal.Actions>
-      <UI.Button color='green'>
+      <UI.Button color='green' onClick={() => {props.onPeopleCountChange("TODO.. 어떻게 넘겨줘야 효과적일까?")}}>
         <UI.Icon name='checkmark' /> Got it
       </UI.Button>
     </UI.Modal.Actions>
   </UI.Modal>
-)
+);
 
 class NewAlarmPage extends React.PureComponent {
   constructor() {
@@ -29,7 +31,25 @@ class NewAlarmPage extends React.PureComponent {
       date: null,
       cinemaCodes: [],
       seats: {},
+      loaded: false
     }
+  }
+
+  componentDidMount() {
+    const Header = new Headers();
+    Header.append("Content-Type", "application/json");
+
+    const myInit = {
+      method: 'GET',
+      headers: Header
+    };
+
+    fetch(`${BACKEND_URL}/cinemas`, myInit).then((response) => {
+      return response.json();
+    }).then((result) => {
+      //TODO: result 를 파싱하여 State 에 저장 필요
+      this.handleLoaded(true);
+    });
   }
 
   handleCinemaChanged = (cinemaCodes) => {
@@ -38,13 +58,31 @@ class NewAlarmPage extends React.PureComponent {
     })
   }
 
+  handlePeopleCountChanged = (peopleCount) => {
+    this.setState({
+      peopleCount
+    })
+  }
+
+  handleLoaded = (loaded) => {
+    this.setState({
+      loaded
+    })
+  }
+
   render() {
     const cinemas = _.filter(CINEMAS, cinema => _.find(this.state.cinemaCodes, code => code === cinema.code))
     return (
       <UI.Container>
+        <UI.Dimmer active={!this.state.loaded}>
+          <UI.Loader>Loading</UI.Loader>
+        </UI.Dimmer>
+
         <UI.Grid padded>
           <UI.Grid.Row>
-            <PeopleCountModal />
+            <PeopleCountModal
+              onPeopleCountChange={this.handlePeopleCountChanged}
+            />
           </UI.Grid.Row>
           <UI.Grid.Row>
             <UI.Button color="teal" fluid circular>날짜 선택</UI.Button>
