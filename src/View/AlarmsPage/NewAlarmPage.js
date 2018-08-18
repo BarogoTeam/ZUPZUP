@@ -11,13 +11,15 @@ const PeopleCountModal = (props) => (
     <UI.Modal.Header>Select a Photo</UI.Modal.Header>
     <UI.Modal.Content>
       <UI.Input
-        label={{ basic: true, content: '명' }}
+        label={{basic: true, content: '명'}}
         labelPosition='right'
       />
     </UI.Modal.Content>
     <UI.Modal.Actions>
-      <UI.Button color='green' onClick={() => {props.onPeopleCountChange("TODO.. 어떻게 넘겨줘야 효과적일까?")}}>
-        <UI.Icon name='checkmark' /> Got it
+      <UI.Button color='green' onClick={() => {
+        props.onPeopleCountChange("TODO.. 어떻게 넘겨줘야 효과적일까?")
+      }}>
+        <UI.Icon name='checkmark'/> Got it
       </UI.Button>
     </UI.Modal.Actions>
   </UI.Modal>
@@ -29,9 +31,10 @@ class NewAlarmPage extends React.PureComponent {
     this.state = {
       peopleCount: null,
       date: null,
-      cinemaCodes: [],
+      selectedCinemaCodes: [],
       seats: {},
-      loaded: false
+      loaded: false,
+      cinemas: []
     }
   }
 
@@ -46,15 +49,29 @@ class NewAlarmPage extends React.PureComponent {
 
     fetch(`${BACKEND_URL}/cinemas`, myInit).then((response) => {
       return response.json();
-    }).then((result) => {
-      //TODO: result 를 파싱하여 State 에 저장 필요
+    }).then((cinemas) => {
+      return cinemas.filter((cinema) => {
+        return cinema.regionName
+      }).map((cinema) => {
+        return {
+          code: cinema.cinemaid,
+          region: cinema.regionName,
+          name: cinema.cinemaName
+        }
+      });
+    }).catch(() => {
+      return CINEMAS;
+    }).then((cinemas) => {
+      this.setState({
+        cinemas
+      });
       this.handleLoaded(true);
-    });
+    })
   }
 
-  handleCinemaChanged = (cinemaCodes) => {
+  handleCinemaChanged = (selectedCinemaCodes) => {
     this.setState({
-      cinemaCodes,
+      selectedCinemaCodes
     })
   }
 
@@ -71,7 +88,7 @@ class NewAlarmPage extends React.PureComponent {
   }
 
   render() {
-    const cinemas = _.filter(CINEMAS, cinema => _.find(this.state.cinemaCodes, code => code === cinema.code))
+    const selectedCinemas = _.filter(this.state.cinemas, cinema => _.find(this.state.selectedCinemaCodes, code => code === cinema.code))
     return (
       <UI.Container>
         <UI.Dimmer active={!this.state.loaded}>
@@ -90,7 +107,8 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <CinemaModal
               onCinemaChanged={this.handleCinemaChanged}
-              cinemas={cinemas}
+              selectedCinemas={selectedCinemas}
+              cinemas={this.state.cinemas}
             />
           </UI.Grid.Row>
           <UI.Grid.Row>

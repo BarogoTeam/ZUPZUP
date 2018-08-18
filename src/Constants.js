@@ -21,5 +21,5 @@ export const CINEMAS = [
     region: '제주',
     name: '서귀포',
     code: '2000',
-  },
+  }
 ];

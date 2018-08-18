@@ -3,9 +3,6 @@ import * as UI from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import {CINEMAS} from '../../Constants';
-
-
 const CinemaListItem = (props) => (
   props.active ? (
     <UI.List.Item {...props} as={UI.Segment} color='teal' inverted>
@@ -35,46 +32,54 @@ export default class CinemaModal extends React.PureComponent {
     super()
     this.state = {
       selectedRegion: null,
-      selectedCinema: null,
+      selectedCinemas: [],
     }
   }
 
   onOpen = () => {
     this.setState({
-      selectedRegion: null,
-      selectedCinema: null,
+      selectedRegion: null
     })
   }
 
   onActionClick = () => {
-    // TODO(재연): 영화관 여러개 받을 수 있도록 수정필요
-    this.props.onCinemaChanged([this.state.selectedCinema])
+    this.props.onCinemaChanged(this.state.selectedCinemas)
   }
 
   handleRegionClick = (region) => {
     this.setState({
-      selectedRegion: region,
-      selectedCinema: null,
+      selectedRegion: region
     })
   }
 
+  getSelectedCinemas = (isExist, cinemaCode) => {
+    if(!isExist) {
+      return this.state.selectedCinemas.concat([cinemaCode]);
+    }
+
+    return this.state.selectedCinemas.filter((selectedCinema) => {
+      return selectedCinema !== cinemaCode;
+    })
+  }
   handleCinemaClick = (cinemaCode) => {
+    let selectedCinemas = this.getSelectedCinemas(this.state.selectedCinemas.includes(cinemaCode), cinemaCode);
+
     this.setState({
-      selectedCinema: cinemaCode,
+      selectedCinemas
     })
   }
 
   renderTriggerButton() {
     return (
       <UI.Button color="teal" fluid circular>
-        {_.isEmpty(this.props.cinemas) ? "상영관 선택" : _.map(this.props.cinemas, "name").join("/")}
+        {_.isEmpty(this.props.selectedCinemas) ? "상영관 선택" : _.map(this.props.selectedCinemas, "name").join("/")}
       </UI.Button>
     )
   }
 
   renderContent() {
-    const regions = _.uniqBy(_.map(CINEMAS, 'region'));
-    const filteredCinemas = _.filter(CINEMAS, cinema=>cinema.region===this.state.selectedRegion)
+    const regions = _.uniqBy(_.map(this.props.cinemas, 'region'));
+    const filteredCinemas = _.filter(this.props.cinemas, cinema=>cinema.region===this.state.selectedRegion)
 
     return (
       <UI.Modal.Content>
@@ -95,7 +100,7 @@ export default class CinemaModal extends React.PureComponent {
               <UI.List.Header> 영화관 </UI.List.Header>
               {filteredCinemas.map((cinema)=>(
                 <CinemaListItem
-                  active={this.state.selectedCinema === cinema.code}
+                  active={this.state.selectedCinemas.includes(cinema.code)}
                   key={cinema.code}
                   onClick={() => {this.handleCinemaClick(cinema.code)}}>
                   {cinema.name}
@@ -114,7 +119,7 @@ export default class CinemaModal extends React.PureComponent {
         trigger={this.renderTriggerButton()}
         header="상영관 선택"
         actions={[
-          <UI.Button key='gotit' color='green' disabled={!this.state.selectedCinema}>
+          <UI.Button key='gotit' color='green'>
             <UI.Icon name='checkmark' /> 완료
           </UI.Button>
         ]}
