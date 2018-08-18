@@ -53,8 +53,9 @@ export default class CinemaModal extends React.PureComponent {
   }
 
   getSelectedCinemas = (isExist, cinemaCode) => {
+    // TODO(재연): 코드가 비직관적이므로 수정필요
     if(!isExist) {
-      return this.state.selectedCinemas.concat([cinemaCode]);
+      return this.state.selectedCinemas.concat([cinemaCode]); // TODO(재연): state의 값을 mutate하는건 Anti-Pattern 이므로 잘못짠 코드. 수정필요.
     }
 
     return this.state.selectedCinemas.filter((selectedCinema) => {
