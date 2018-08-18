@@ -2,9 +2,8 @@ import React from 'react';
 import * as UI from 'semantic-ui-react';
 import _ from 'lodash';
 
-import {CINEMAS} from '../../Constants';
+import { CINEMAS, BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
-import {BACKEND_URL} from "../../index";
 
 const PeopleCountModal = (props) => (
   <UI.Modal trigger={<UI.Button color="teal" fluid circular>인원수 선택</UI.Button>}>
