@@ -36,13 +36,13 @@ export default class CinemaModal extends React.PureComponent {
     }
   }
 
-  onOpen = () => {
+  handleOpen = () => {
     this.setState({
       selectedRegion: null
     })
   }
 
-  onActionClick = () => {
+  handleActionClick = () => {
     this.props.onCinemaChanged(this.state.selectedCinemas)
   }
 
@@ -125,8 +125,8 @@ export default class CinemaModal extends React.PureComponent {
           </UI.Button>
         ]}
         content={this.renderContent()}
-        onOpen={this.onOpen}
-        onActionClick={this.onActionClick}
+        onOpen={this.handleOpen}
+        onActionClick={this.handleActionClick}
       />
     )
   }
