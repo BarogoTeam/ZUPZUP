@@ -1,20 +1,18 @@
 import {Route, Switch} from "react-router-dom";
-import React, {Component} from "react";
+import React from "react";
 import MoviesPage from "../View/MoviesPage/MoviesPage";
 import AlarmsPage from "../View/AlarmsPage/AlarmsPage";
 import NewAlarmPage from "../View/AlarmsPage/NewAlarmPage";
 
-class BasicRouter extends Component {
+class BasicRouter extends React.Component { // SUGGESTION: Move back to App.js, this kind of separation does not improve anything
   render() {
     return (
-      <main>
-        <Switch>
-          <Route exact path="/" component={AlarmsPage} />
-          <Route path="/alarms/new" component={NewAlarmPage} />
-          <Route path="/alarms" component={AlarmsPage} />
-          <Route path="/movies" component={MoviesPage} />
-        </Switch>
-      </main>
+      <Switch>
+        <Route exact path="/" component={AlarmsPage} />
+        <Route path="/alarms/new" component={NewAlarmPage} />
+        <Route path="/alarms" component={AlarmsPage} />
+        <Route path="/movies" component={MoviesPage} />
+      </Switch>
     )
   }
 }
