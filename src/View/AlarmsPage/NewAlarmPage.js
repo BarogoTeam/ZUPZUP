@@ -59,6 +59,7 @@ class NewAlarmPage extends React.PureComponent {
         }
       });
     }).catch(() => {
+      // TODO(재연): CINEMAS 는 삭제될 예정이므로 적절한 Catch문으로 수정필요)
       return CINEMAS;
     }).then((cinemas) => {
       this.setState({
