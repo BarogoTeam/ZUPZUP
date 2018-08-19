@@ -2,7 +2,7 @@ import React from 'react';
 import * as UI from 'semantic-ui-react';
 import _ from 'lodash';
 
-import { CINEMAS, BACKEND_URL } from '../../Constants';
+import { BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
 
 const PeopleCountModal = (props) => (
@@ -58,9 +58,6 @@ class NewAlarmPage extends React.PureComponent {
           name: cinema.cinemaName
         }
       });
-    }).catch(() => {
-      // TODO(재연): CINEMAS 는 삭제될 예정이므로 에러메시지를 출력하는 쪽으로 수정필요)
-      return CINEMAS;
     }).then((cinemas) => {
       this.setState({
         cinemas
