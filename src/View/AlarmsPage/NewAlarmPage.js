@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
+import DateModal from "./DateModal";
 
 const PeopleCountModal = (props) => (
   <UI.Modal trigger={<UI.Button color="teal" fluid circular>인원수 선택</UI.Button>}>
@@ -99,7 +100,7 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            <UI.Button color="teal" fluid circular>날짜 선택</UI.Button>
+            <DateModal />
           </UI.Grid.Row>
           <UI.Grid.Row>
             <CinemaModal
