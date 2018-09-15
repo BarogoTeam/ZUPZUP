@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
+import ScreenModal from './ScreenModal';
 import DateModal from "./DateModal";
 
 const PeopleCountModal = (props) => (
@@ -49,10 +50,11 @@ class NewAlarmPage extends React.PureComponent {
 
     fetch(`${BACKEND_URL}/cinemas`, myInit).then((response) => {
       return response.json();
-    }).then((cinemas) => {
+      }).then((cinemas) => {
       return cinemas.filter((cinema) => {
         return cinema.regionName
       }).map((cinema) => {
+        console.log('hihi1')
         return {
           code: cinema.cinemaid,
           region: cinema.regionName,
@@ -60,6 +62,7 @@ class NewAlarmPage extends React.PureComponent {
         }
       });
     }).then((cinemas) => {
+      console.log('hihi2')
       this.setState({
         cinemas
       });
@@ -84,6 +87,7 @@ class NewAlarmPage extends React.PureComponent {
       loaded
     })
   }
+
 
   render() {
     const selectedCinemas = _.filter(this.state.cinemas, cinema => _.find(this.state.selectedCinemaCodes, code => code === cinema.code))
@@ -110,7 +114,12 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            <UI.Button color="teal" fluid circular>좌석 선택</UI.Button>
+            {/*<UI.Button color="teal" fluid circular>좌석 선택</UI.Button>*/}
+            <ScreenModal
+              onScreenChanged={this.handleScreenChanged}
+              selectedCinemas={selectedCinemas}
+              cinemas={this.state.cinemas}
+            />
           </UI.Grid.Row>
         </UI.Grid>
       </UI.Container>
