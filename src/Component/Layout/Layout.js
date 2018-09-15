@@ -55,6 +55,12 @@ export default class Layout extends React.PureComponent {
               Movies
             </UI.Menu.Item>
           </Link>
+          <Link to="/screens" onClick={() => {this.activateMenu(null)}}>
+            <UI.Menu.Item name='screens'>
+              <UI.Icon name='camera' />
+              Movies
+            </UI.Menu.Item>
+          </Link>
         </UI.Sidebar>
         <UI.Dimmer.Dimmable blurring dimmed={activeMenu !== null}>
           <NavBar
