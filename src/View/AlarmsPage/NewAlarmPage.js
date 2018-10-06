@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
-import ScreenModal from './ScreenModal';
+import SeatModal from './SeatModal';
 import DateModal from "./DateModal";
 
 const PeopleCountModal = (props) => (
@@ -113,7 +113,7 @@ class NewAlarmPage extends React.PureComponent {
           </UI.Grid.Row>
           <UI.Grid.Row>
             {/*<UI.Button color="teal" fluid circular>좌석 선택</UI.Button>*/}
-            <ScreenModal
+            <SeatModal
               onScreenChanged={this.handleScreenChanged}
               selectedCinemas={selectedCinemas}
               cinemas={this.state.cinemas}
