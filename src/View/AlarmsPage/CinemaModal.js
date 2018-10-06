@@ -73,7 +73,7 @@ export default class CinemaModal extends React.PureComponent {
   renderTriggerButton() {
     return (
       <UI.Button color="teal" fluid circular>
-        {_.isEmpty(this.props.selectedCinemas) ? "상영관 선택" : _.map(this.props.selectedCinemas, "name").join("/")}
+        {_.isEmpty(this.props.selectedCinemas) ? "영화관 선택" : _.map(this.props.selectedCinemas, "name").join("/")}
       </UI.Button>
     )
   }
@@ -118,7 +118,7 @@ export default class CinemaModal extends React.PureComponent {
     return (
       <UI.Modal
         trigger={this.renderTriggerButton()}
-        header="상영관 선택"
+        header="영화관 선택"
         actions={[
           <UI.Button key='gotit' color='green'>
             <UI.Icon name='checkmark' /> 완료
