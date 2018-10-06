@@ -50,11 +50,10 @@ class NewAlarmPage extends React.PureComponent {
 
     fetch(`${BACKEND_URL}/cinemas`, myInit).then((response) => {
       return response.json();
-      }).then((cinemas) => {
-      return cinemas.filter((cinema) => {
+    }).then((cinemas) => {
+      return _.filter(cinemas, (cinema) => {
         return cinema.regionName
       }).map((cinema) => {
-        console.log('hihi1')
         return {
           code: cinema.cinemaid,
           region: cinema.regionName,
@@ -62,7 +61,6 @@ class NewAlarmPage extends React.PureComponent {
         }
       });
     }).then((cinemas) => {
-      console.log('hihi2')
       this.setState({
         cinemas
       });
