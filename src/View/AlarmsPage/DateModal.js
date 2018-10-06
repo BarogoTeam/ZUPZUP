@@ -6,7 +6,7 @@ export default class DateModal extends React.PureComponent {
   renderTriggerButton() {
     return (
       <UI.Button color="teal" fluid circular>
-        재연이 바보 멍충이
+        날짜 선택
       </UI.Button>
     )
   }
@@ -50,7 +50,7 @@ export default class DateModal extends React.PureComponent {
   render() {
     return (
       <UI.Modal
-        header="재연이 바보 멍충이"
+        header="날짜 선택"
         trigger={this.renderTriggerButton()}
         content={this.renderContent()}
         actions={[
