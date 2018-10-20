@@ -6,25 +6,7 @@ import { BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
 import SeatModal from './SeatModal';
 import DateModal from "./DateModal";
-
-const PeopleCountModal = (props) => (
-  <UI.Modal trigger={<UI.Button color="teal" fluid circular>인원수 선택</UI.Button>}>
-    <UI.Modal.Header>Select a Photo</UI.Modal.Header>
-    <UI.Modal.Content>
-      <UI.Input
-        label={{basic: true, content: '명'}}
-        labelPosition='right'
-      />
-    </UI.Modal.Content>
-    <UI.Modal.Actions>
-      <UI.Button color='green' onClick={() => {
-        props.onPeopleCountChange("TODO.. 어떻게 넘겨줘야 효과적일까?")
-      }}>
-        <UI.Icon name='checkmark'/> Got it
-      </UI.Button>
-    </UI.Modal.Actions>
-  </UI.Modal>
-);
+import PeopleCountModal from "./PeopleCountModal"
 
 class NewAlarmPage extends React.PureComponent {
   constructor() {
@@ -105,6 +87,7 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <PeopleCountModal
               onPeopleCountChange={this.handlePeopleCountChanged}
+              peopleCount={this.state.peopleCount}
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
