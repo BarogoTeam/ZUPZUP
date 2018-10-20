@@ -80,6 +80,12 @@ class NewAlarmPage extends React.PureComponent {
     })
   }
 
+  handleAlarmDateChanged = (selectedDay) => {
+    this.setState({
+      selectedDay
+    })
+  }
+
   handleLoaded = (loaded) => {
     this.setState({
       loaded
@@ -102,7 +108,9 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            <DateModal />
+            <DateModal 
+              onAlarmDateChanged={this.handleAlarmDateChanged}
+              selectedDay={this.state.selectedDay}/>
           </UI.Grid.Row>
           <UI.Grid.Row>
             <CinemaModal
