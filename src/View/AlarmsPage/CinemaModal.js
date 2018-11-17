@@ -52,18 +52,18 @@ export default class CinemaModal extends React.PureComponent {
     })
   }
 
-  getSelectedCinemas = (isExist, cinemaCode) => {
+  getSelectedCinemas = (isExist, cinema) => {
     // TODO(재연): 코드가 비직관적이므로 수정필요
     if(!isExist) {
-      return this.state.selectedCinemas.concat([cinemaCode]);
+      return this.state.selectedCinemas.concat([cinema]);
     }
 
     return this.state.selectedCinemas.filter((selectedCinema) => {
-      return selectedCinema !== cinemaCode;
+      return selectedCinema !== cinema;
     })
   }
-  handleCinemaClick = (cinemaCode) => {
-    let selectedCinemas = this.getSelectedCinemas(this.state.selectedCinemas.includes(cinemaCode), cinemaCode);
+  handleCinemaClick = (cinema) => {
+    let selectedCinemas = this.getSelectedCinemas(this.state.selectedCinemas.includes(cinema), cinema);
 
     this.setState({
       selectedCinemas
@@ -101,9 +101,9 @@ export default class CinemaModal extends React.PureComponent {
               <UI.List.Header> 영화관 </UI.List.Header>
               {filteredCinemas.map((cinema)=>(
                 <CinemaListItem
-                  active={this.state.selectedCinemas.includes(cinema.code)}
+                  active={this.state.selectedCinemas.includes(cinema)}
                   key={cinema.code}
-                  onClick={() => {this.handleCinemaClick(cinema.code)}}>
+                  onClick={() => {this.handleCinemaClick(cinema)}}>
                   {cinema.name}
                 </CinemaListItem>
               ))}

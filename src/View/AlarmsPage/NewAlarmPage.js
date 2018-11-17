@@ -2,11 +2,12 @@ import React from 'react';
 import * as UI from 'semantic-ui-react';
 import _ from 'lodash';
 
-import { BACKEND_URL } from '../../Constants';
 import CinemaModal from './CinemaModal';
 import SeatModal from './SeatModal';
 import DateModal from "./DateModal";
 import PeopleCountModal from "./PeopleCountModal"
+import AlarmService from '../../Service/AlarmService';
+import Screens from './Screens';
 
 class NewAlarmPage extends React.PureComponent {
   constructor() {
@@ -14,7 +15,7 @@ class NewAlarmPage extends React.PureComponent {
     this.state = {
       peopleCount: null,
       date: null,
-      selectedCinemaCodes: [],
+      selectedCinemas: [],
       seats: {},
       loaded: false,
       cinemas: []
@@ -22,23 +23,15 @@ class NewAlarmPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const Header = new Headers();
-    Header.append("Content-Type", "application/json");
-
-    const myInit = {
-      method: 'GET',
-      headers: Header
-    };
-
-    fetch(`${BACKEND_URL}/cinemas`, myInit).then((response) => {
-      return response.json();
-    }).then((cinemas) => {
+    AlarmService.getCinemas().then((cinemas) => {
       return _.filter(cinemas, (cinema) => {
         return cinema.regionName
       }).map((cinema) => ({
         code: cinema.cinemaid,
         region: cinema.regionName,
-        name: cinema.cinemaName
+        name: cinema.cinemaName,
+        divisionCode: cinema.divisionCode,
+        detailDivisionCode: cinema.detailDivisionCode,
       }))
     }).then((cinemas) => {
       this.setState({
@@ -52,9 +45,9 @@ class NewAlarmPage extends React.PureComponent {
     })
   }
 
-  handleCinemaChanged = (selectedCinemaCodes) => {
+  handleCinemaChanged = (selectedCinemas) => {
     this.setState({
-      selectedCinemaCodes
+      selectedCinemas
     })
   }
 
@@ -78,7 +71,6 @@ class NewAlarmPage extends React.PureComponent {
 
 
   render() {
-    const selectedCinemas = _.filter(this.state.cinemas, cinema => _.find(this.state.selectedCinemaCodes, code => code === cinema.code))
     return (
       <UI.Container>
         <UI.Dimmer active={!this.state.loaded}>
@@ -100,16 +92,23 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <CinemaModal
               onCinemaChanged={this.handleCinemaChanged}
-              selectedCinemas={selectedCinemas}
+              selectedCinemas={this.state.selectedCinemas}
               cinemas={this.state.cinemas}
             />
+          </UI.Grid.Row>
+          <UI.Grid.Row>
+            {this.state.selectedDay && !_.isEmpty(this.state.selectedCinemas) && 
+              <Screens
+                key={`${this.state.selectedDay.format('YYYY-MM-DD')},${this.state.selectedCinemas.join(',')}`}
+                alarmDate={this.state.selectedDay}
+                cinemaCodes={this.state.selectedCinemas}
+              />
+            }
           </UI.Grid.Row>
           <UI.Grid.Row>
             {/*<UI.Button color="teal" fluid circular>좌석 선택</UI.Button>*/}
             <SeatModal
               onScreenChanged={this.handleScreenChanged}
-              selectedCinemas={selectedCinemas}
-              cinemas={this.state.cinemas}
             />
           </UI.Grid.Row>
         </UI.Grid>
