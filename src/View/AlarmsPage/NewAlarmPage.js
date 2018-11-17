@@ -35,18 +35,20 @@ class NewAlarmPage extends React.PureComponent {
     }).then((cinemas) => {
       return _.filter(cinemas, (cinema) => {
         return cinema.regionName
-      }).map((cinema) => {
-        return {
-          code: cinema.cinemaid,
-          region: cinema.regionName,
-          name: cinema.cinemaName
-        }
-      });
+      }).map((cinema) => ({
+        code: cinema.cinemaid,
+        region: cinema.regionName,
+        name: cinema.cinemaName
+      }))
     }).then((cinemas) => {
       this.setState({
         cinemas
       });
       this.handleLoaded(true);
+    }).catch((e) => {
+      // TODO: 에러메시지 띄워주기
+      console.error('010-4486-3511');
+      alert('서버 오류입니다. 서비스 데스크로 문의해주세요.\n연락처: 010-4486-3511');
     })
   }
 
@@ -91,7 +93,7 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            <DateModal 
+            <DateModal
               onAlarmDateChanged={this.handleAlarmDateChanged}
               selectedDay={this.state.selectedDay}/>
           </UI.Grid.Row>
