@@ -3,9 +3,8 @@ import * as UI from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Konva from 'konva';
-import { Button, Form, Segment } from 'semantic-ui-react'
 
-let SeatInfo = require('./seatInfoExample.json')
+const SeatInfo = require('./seatInfoExample.json')
 
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
@@ -195,15 +194,15 @@ class SeatContent extends React.PureComponent {
   render() {
     //const {screens} = this.props;
     return (
-      <Form>
-        <Segment basic>
+      <UI.Form>
+        <UI.Segment basic>
           <div ref={this.ref}>
             <div ref={ref => this.drawKonva(ref)} />
           </div>
-        </Segment>
-        <Button icon='angle left' floated='left'/>
-        <Button icon='angle right' floated='right'/>
-      </Form>
+        </UI.Segment>
+        <UI.Button icon='angle left' floated='left'/>
+        <UI.Button icon='angle right' floated='right'/>
+      </UI.Form>
     );
   }
 }
