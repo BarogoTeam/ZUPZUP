@@ -46,7 +46,6 @@ class NewAlarmPage extends React.PureComponent {
       });
       this.handleLoaded(true);
     }).catch((e) => {
-      // TODO: 에러메시지 띄워주기
       console.error('010-4486-3511');
       alert('서버 오류입니다. 서비스 데스크로 문의해주세요.\n연락처: 010-4486-3511');
     })
