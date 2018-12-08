@@ -8,7 +8,7 @@ const SeatInfo = require('./seatInfoExample.json')
 
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
-    seats: PropTypes.arrayOf(PropTypes.object).isRequired,
+    seats: PropTypes.arrayOf(PropTypes.object),
     onScreenChanged: PropTypes.func,
   }
   static defaultProps = {

@@ -16,7 +16,7 @@ const CinemaListItem = (props) => (
 )
 CinemaListItem.propTypes = {
   active: PropTypes.bool,
-  children : PropTypes.node,
+  children : PropTypes.node
 }
 
 export default class CinemaModal extends React.PureComponent {
@@ -96,8 +96,7 @@ export default class CinemaModal extends React.PureComponent {
               </CinemaListItem>
             ))}
           </UI.List>
-          {this.state.selectedRegion && (
-            <UI.List selection>
+          {this.state.selectedRegion && (            <UI.List selection>
               <UI.List.Header> 영화관 </UI.List.Header>
               {filteredCinemas.map((cinema)=>(
                 <CinemaListItem

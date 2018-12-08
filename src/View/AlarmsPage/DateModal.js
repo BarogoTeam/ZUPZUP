@@ -36,7 +36,7 @@ export default class DateModal extends React.PureComponent {
   }
 
   handleActionClick = () => {
-    console.log(this.state.selectedDay.format('YYYYMMDD'))
+    //console.log(this.state.selectedDay.format('YYYYMMDD'))
     this.props.onAlarmDateChanged(this.state.selectedDay)
   }
 
