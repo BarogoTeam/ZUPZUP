@@ -1,8 +1,8 @@
 import React from 'react';
-import * as UI from "semantic-ui-react";
+import {Link} from 'react-router-dom';
+import * as UI from 'semantic-ui-react';
 import NavBar from '../NavBar/NavBar'
-import {Link} from "react-router-dom";
-import PropTypes from "prop-types";
+import LoginSegment from '../../View/UserPage/LoginSegment';
 
 export default class Layout extends React.PureComponent {
 
@@ -56,6 +56,17 @@ export default class Layout extends React.PureComponent {
             </UI.Menu.Item>
           </Link>
         </UI.Sidebar>
+        <UI.Sidebar
+          as={UI.Menu}
+          animation='push'
+          width='wide'
+          icon='labeled'
+          direction='right'
+          vertical
+          visible={activeMenu === 'right'}
+        >
+          <LoginSegment></LoginSegment>
+        </UI.Sidebar>
         <UI.Dimmer.Dimmable blurring dimmed={activeMenu !== null}>
           <NavBar
             activeItem={'sign-in'}
@@ -75,7 +86,3 @@ export default class Layout extends React.PureComponent {
     )
   }
 }
-
-Layout.propTypes = {
-  children: PropTypes.node
-};
