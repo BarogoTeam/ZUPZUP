@@ -16,7 +16,7 @@ class NewAlarmPage extends React.PureComponent {
       peopleCount: null,
       date: null,
       selectedCinemas: [],
-      seats: {},
+      seats: [],
       loaded: false,
       cinemas: []
     }
@@ -68,6 +68,11 @@ class NewAlarmPage extends React.PureComponent {
     })
   }
 
+  handleSeatsChanged = (seats) => {
+    this.setState({
+      seats
+    })
+  }
 
   render() {
     return (
@@ -107,7 +112,7 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             {/*<UI.Button color="teal" fluid circular>좌석 선택</UI.Button>*/}
             <SeatModal
-              onScreenChanged={this.handleScreenChanged}
+              onSeatsChanged={this.handleSeatsChanged}
             />
           </UI.Grid.Row>
         </UI.Grid>
