@@ -3,79 +3,86 @@ import * as UI from 'semantic-ui-react';
 import _ from 'lodash';
 import AlarmService from '../../Service/AlarmService';
 
+class MovieScreens extends React.PureComponent {
+
+  constructor() {
+    super();
+    this.state = { movie: null };
+  }
+
+  componentDidMount() {
+    AlarmService.getMovie(this.props.movieCode)
+      .then(movie => this.setState({ movie }));
+  }
+
+  render() {
+    const { movie } = this.state;
+    const { screens } = this.props;
+    if (!movie) return <UI.Loader active />;
+
+    return (
+      <React.Fragment>
+        <UI.Item.Meta content={movie.movieNameKr} />
+        {_.map(screens, (screen, screenId) => (
+          <UI.Item.Description key={screenId}>
+            <UI.Button basic compact mini floated="right" content={screen[0].screenNameKr} />
+            {screen.map(sequence => (
+              <UI.Label key={sequence.playSequence}>
+                {sequence.startTime}
+                <UI.LabelDetail content={sequence.endTime}/>
+              </UI.Label>
+            ))}
+          </UI.Item.Description>
+        ))}
+      </React.Fragment>
+    );  
+  }
+}
+
 export default class Screens extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      screens: []
+      cinemaMovieScreens: []
     }
   }
 
   componentDidMount() {
     AlarmService.getScreens(this.props.cinemaCodes, this.props.alarmDate).then((screens) => {
-      console.log(screens);
       return screens.map((screen) => {
         return {
-          cinemaId: `${screen.screenId}`.substring(0,4),
-          screenId: screen.screenId,
-          movieCode: screen.movieCode,
-          startTime: screen.startTime,
-          endTime: screen.endTime,
-          totalSeatCount: screen.totalSeatCount,
-          bookingSeatCount: screen.bookingSeatCount
+          ...screen,
+          cinemaId: `${screen.screenId}`.substring(0, 4),
         }
       })
     }).then((screens) => {
-
-      console.log(screens);
       this.setState({
-        screens
+        cinemaMovieScreens: _.mapValues(_.groupBy(screens, 'cinemaId'), screens => _.mapValues(_.groupBy(screens, 'movieCode'), screens => _.groupBy(screens, 'screenId')))
       });
 
-      console.log("done");
 
     }).catch((e) => {
       console.error('010-4486-3511');
-      alert('서버 오류입니다. 서비스 데스크로 문의해주세요.\n연락처: 010-4486-3511\n'+JSON.stringify(e));
+      alert('서버 오류입니다. 서비스 데스크로 문의해주세요.\n연락처: 010-4486-3511\n' + JSON.stringify(e));
     })
 
   }
 
   render() {
+    const { cinemaMovieScreens } = this.state;
     return (
       <UI.Item.Group divided>
-        <UI.Item>
-          {this.state.screens.map((screen   , i) => {
-            console.log(`<screenContent cinemaId = ${screen.cinemaId}
-                                       screenId = ${screen.screenId}
-                                       movieCode = ${screen.movieCode}
-                                       startTime = ${screen.startTime}
-                                       endTime = ${screen.endTime} key = ${i}/>`)
-            return /*(<screenContent cinemaId = {screen.cinemaId}
-                                   screenId = {screen.screenId}
-                                   movieCode = {screen.movieCode}
-                                   startTime = {screen.startTime}
-                                   endTime = {screen.endTime} key = {i}/>);*///TODO 로그로 나오는것 출력기능 by 태선
-          })}
-        </UI.Item>
+        {_.map(cinemaMovieScreens, (movieScreens, cinemaId) => (
+          <UI.Item key={cinemaId}>
+            <UI.Item.Header content={cinemaId} />
+            <UI.Item.Content>
+              {_.map(movieScreens, (screens, movieCode) => (
+                <MovieScreens key={movieCode} movieCode={movieCode} screens={screens} />
+              ))}
+            </UI.Item.Content>
+          </UI.Item>
+        ))}
       </UI.Item.Group>
-
-    );
-  }
-}
-
-class screenContent extends React.PureComponent {
-  render() {
-    return (
-      <UI.Item.Content>
-        <UI.Item.Header as='a'>{this.props.cinemaId}</UI.Item.Header>
-        <UI.Item.Meta>
-          <span className='cinema'>{this.props.movieCode}</span>
-        </UI.Item.Meta>
-        <UI.Item.Extra>
-          <UI.Label>{this.props.startTime} ~ {this.props.endTime}</UI.Label>
-        </UI.Item.Extra>
-      </UI.Item.Content>
     );
   }
 }

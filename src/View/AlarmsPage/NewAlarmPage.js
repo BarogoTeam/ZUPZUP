@@ -110,7 +110,6 @@ class NewAlarmPage extends React.PureComponent {
             }
           </UI.Grid.Row>
           <UI.Grid.Row>
-            {/*<UI.Button color="teal" fluid circular>좌석 선택</UI.Button>*/}
             <SeatModal
               onSeatsChanged={this.handleSeatsChanged}
             />
