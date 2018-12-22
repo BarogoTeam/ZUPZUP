@@ -25,9 +25,9 @@ class MovieScreens extends React.PureComponent {
         <UI.Item.Meta content={movie.movieNameKr} />
         {_.map(screens, (screen, screenId) => (
           <UI.Item.Description key={screenId}>
-            <UI.Button basic compact mini floated="right" content={screen[0].screenNameKr} />
+            <UI.Button basic compact size="mini" floated="right" content={screen[0].screenNameKr} />
             {screen.map(sequence => (
-              <UI.Label key={sequence.playSequence}>
+              <UI.Label as='a' key={sequence.playSequence}>
                 {sequence.startTime}
                 <UI.LabelDetail content={sequence.endTime}/>
               </UI.Label>
@@ -48,7 +48,7 @@ export default class Screens extends React.PureComponent {
   }
 
   componentDidMount() {
-    AlarmService.getScreens(this.props.cinemaCodes, this.props.alarmDate).then((screens) => {
+    AlarmService.getScreens(this.props.cinemas, this.props.alarmDate).then((screens) => {
       return screens.map((screen) => {
         return {
           ...screen,
@@ -70,11 +70,13 @@ export default class Screens extends React.PureComponent {
 
   render() {
     const { cinemaMovieScreens } = this.state;
+    const { cinemas } = this.props;
+
     return (
       <UI.Item.Group divided>
         {_.map(cinemaMovieScreens, (movieScreens, cinemaId) => (
           <UI.Item key={cinemaId}>
-            <UI.Item.Header content={cinemaId} />
+            <UI.Item.Header content={_.find(cinemas, ['code', _.toNumber(cinemaId)]).name} />
             <UI.Item.Content>
               {_.map(movieScreens, (screens, movieCode) => (
                 <MovieScreens key={movieCode} movieCode={movieCode} screens={screens} />

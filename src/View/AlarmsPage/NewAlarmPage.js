@@ -100,7 +100,7 @@ class NewAlarmPage extends React.PureComponent {
               <Screens
                 key={`${this.state.selectedDay.format('YYYY-MM-DD')},${this.state.selectedCinemas.join(',')}`}
                 alarmDate={this.state.selectedDay}
-                cinemaCodes={this.state.selectedCinemas}
+                cinemas={this.state.selectedCinemas}
               />
             }
           </UI.Grid.Row>
