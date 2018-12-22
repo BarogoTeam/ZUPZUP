@@ -1,7 +1,6 @@
 import React from "react";
 import * as UI from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 export default class LoginSegment extends React.PureComponent {
   static propTypes = {
@@ -59,7 +58,7 @@ export default class LoginSegment extends React.PureComponent {
 
   render() {
     return (
-      <UI.Segment padded='very' textAlign='left' secondary='true'>
+      <UI.Segment padded='very' textAlign='left' secondary>
         <UI.Form>
           <UI.Form.Field>
             <label>EMAIL</label>
