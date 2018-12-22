@@ -8,18 +8,19 @@ const SeatInfo = require('./seatInfoExample.json')
 
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
-    seats: PropTypes.arrayOf(PropTypes.object),
-    onScreenChanged: PropTypes.func,
+    selectedSeats: PropTypes.arrayOf(PropTypes.object),
+    onSeatsChanged: PropTypes.func,
   }
   static defaultProps = {
-    onScreenChanged: () => {},
+    selectedSeats: null,
+    onSeatsChanged: () => {},
   }
 
 
   constructor() {
     super()
     this.state = {
-      selectedSeats: [],
+      selectedSeats: null,
     }
   }
 
@@ -30,19 +31,23 @@ export default class SeatModal extends React.PureComponent {
   }
 
   handleActionClick = () => {
-    this.props.onCinemaChanged(this.state.selectedCinemas)
+    this.props.onSeatsChanged(this.state.selectedSeats)
   }
 
+  handleSeatSelected = (selectedSeats) => {
+    this.setState({
+      selectedSeats
+    })
+  }
 
   getSelectedSeats = (isExist, cinemaCode) => {
-
 
   }
 
   renderTriggerButton() {
     return (
       <UI.Button color="teal" fluid circular>
-        {_.isEmpty(this.props.selectedSeats) ? "좌석 선택" : "좌석 선택완료"}
+        {_.isEmpty(this.state.selectedSeats) ? "좌석 선택" : this.state.selectedSeats.length + "개 좌석"}
       </UI.Button>
     )
   }
@@ -58,7 +63,7 @@ export default class SeatModal extends React.PureComponent {
             <UI.Icon name='checkmark' /> 완료
           </UI.Button>
         ]}
-        content={<SeatContent/>}
+        content={<SeatContent onSeatSelected={this.handleSeatSelected}/>}
         onOpen={this.handleOpen}
         onActionClick={this.handleActionClick}
       />
@@ -66,19 +71,34 @@ export default class SeatModal extends React.PureComponent {
   }
 }
 
-class SeatContent extends React.PureComponent {
+class SeatContent extends React.Component {
   constructor() {
     super();
     this.state = {
       clientWidth: 1,
+      selectedSeats: null
     }
     this.ref = React.createRef();
+  }
+
+  static propTypes = {
+    onSeatsChanged: PropTypes.func,
+  }
+
+  static defaultProps = {
+    selectedSeats: null,
+    onSeatsChanged: () => {},
+  }
+
+  shouldComponentUpdate() {
+    return this.state.selectedSeats === null;
   }
 
   componentDidMount() {
     const { clientWidth } = this.ref.current;
     this.setState({
-      clientWidth
+      clientWidth,
+      selectedSeats: []
     })
   }
 
@@ -86,59 +106,54 @@ class SeatContent extends React.PureComponent {
     if (!container || this.state.clientWidth === 1) return;
     let cursorEventFlag;
     let cursorRect = null;
-    let seatRect;
-    let Seat = SeatInfo.Items;
+    let seatRectList;
+    let seatList = SeatInfo.Items;
     let maxx = 0, maxy = 0, minx = 999999, miny = 999999;
 
-    for(let i=0;i<Seat.length;i++){
-      if(maxx < Seat[i].SeatXCoordinate)  maxx = Seat[i].SeatXCoordinate;
-      if(maxy < Seat[i].SeatYCoordinate)  maxy = Seat[i].SeatYCoordinate;
-      if(minx > Seat[i].SeatXCoordinate)  minx = Seat[i].SeatXCoordinate;
-      if(miny > Seat[i].SeatYCoordinate)  miny = Seat[i].SeatYCoordinate;
+    for(let seat of seatList){
+      if(maxx < seat.SeatXCoordinate)  maxx = seat.SeatXCoordinate;
+      if(maxy < seat.SeatYCoordinate)  maxy = seat.SeatYCoordinate;
+      if(minx > seat.SeatXCoordinate)  minx = seat.SeatXCoordinate;
+      if(miny > seat.SeatYCoordinate)  miny = seat.SeatYCoordinate;
     }
     let correction = maxx / this.state.clientWidth * 1.3;
 
     let stage = new Konva.Stage({
       container: container,
-      width: (maxx - minx + Seat[0].SeatXLength) / correction + 100,
-      height: (maxy - miny + Seat[0].SeatYLength)  / correction + 100
+      width: (maxx - minx + seatList[0].SeatXLength) / correction + 100,
+      height: (maxy - miny + seatList[0].SeatYLength)  / correction + 100
     });
 
     let layer = new Konva.Layer();
-    layer.add(new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: (maxx - minx + Seat[0].SeatXLength) / correction + 100,
-      height: (maxy - miny + Seat[0].SeatYLength)  / correction + 100,
-      stroke: 'black'}));
+
     layer.add(new Konva.Rect({
       x: 50,
       y: 10,
-      width: (maxx - minx + Seat[0].SeatXLength) / correction,
-      height: Seat[0].SeatYLength / correction,
+      width: (maxx - minx + seatList[0].SeatXLength) / correction,
+      height: seatList[0].SeatYLength / correction,
       fill: 'black',
       stroke: 'black'}));
 
-    seatRect = [];
-    for(let i=0;i<Seat.length;i++){
-      Seat[i].SeatXLength /= correction;
-      Seat[i].SeatYLength /= correction;
-      Seat[i].SeatXCoordinate = (Seat[i].SeatXCoordinate - minx) / correction + 50;
-      Seat[i].SeatYCoordinate = (Seat[i].SeatYCoordinate - miny) / correction + Seat[0].SeatYLength * 2;
-      seatRect.push(new Konva.Rect({
-        x: Seat[i].SeatXCoordinate,
-        y: Seat[i].SeatYCoordinate,
-        width: Seat[i].SeatXLength,
-        height:Seat[i].SeatYLength,
-        SeatNo: Seat[i].SeatNo,
+    seatRectList = [];
+    for(let i=0;i<seatList.length;i++){
+      seatList[i].SeatXLength /= correction;
+      seatList[i].SeatYLength /= correction;
+      seatList[i].SeatXCoordinate = (seatList[i].SeatXCoordinate - minx) / correction + 50;
+      seatList[i].SeatYCoordinate = (seatList[i].SeatYCoordinate - miny) / correction + seatList[0].SeatYLength * 2;
+      seatRectList.push(new Konva.Rect({
+        x: seatList[i].SeatXCoordinate,
+        y: seatList[i].SeatYCoordinate,
+        width: seatList[i].SeatXLength,
+        height:seatList[i].SeatYLength,
+        SeatNo: seatList[i].SeatNo,
         Selected: false,
         fill: 'white',
-        stroke: 'black',
+        stroke: seatList[i].Selected ? 'red' : 'black',
         strokeWidth: 2}));
-      layer.add(seatRect[i]);
+      layer.add(seatRectList[i]);
     }
 
-    function drawStart(drawX,drawY){
+    let drawStart = (drawX,drawY) => {
       if(cursorRect != null)  cursorRect.destroy();
       cursorEventFlag = true;
       cursorRect = new Konva.Rect({
@@ -153,7 +168,7 @@ class SeatContent extends React.PureComponent {
       stage.draw();
     }
 
-    function drawMove(drawX,drawY){
+    let drawMove = (drawX,drawY) => {
       if(cursorEventFlag){
         cursorRect.attrs.width = drawX - cursorRect.attrs.x;
         cursorRect.attrs.height = drawY - cursorRect.attrs.y;
@@ -161,47 +176,66 @@ class SeatContent extends React.PureComponent {
       }
     }
 
-    function drawEnd(){
+    let drawEnd = () => {
       if(cursorRect != null){
-        var r = cursorRect.attrs;
-        for(var i=0;i<seatRect.length;i++){
-          var s = seatRect[i].attrs;
-          if(r.x <= s.x && r.y <= s.y && (r.x+r.width) >= (s.x+s.width) && (r.y+r.height) >= (s.y+s.height)){
-            seatRect[i].attrs.fill = 'red';
-            seatRect[i].Selected = true;
+        let selectRect = cursorRect.attrs;
+        if(selectRect.width < 0) {
+          selectRect.x += selectRect.width;
+          selectRect.width *= -1;
+        }
+
+        if(selectRect.height < 0) {
+          selectRect.y += selectRect.height;
+          selectRect.height *= -1;
+        }
+
+        for(let i=0;i<seatRectList.length;i++){
+          let seatRect = seatRectList[i].attrs;
+          if(selectRect.x <= seatRect.x && selectRect.y <= seatRect.y && (selectRect.x+selectRect.width) >= (seatRect.x+seatRect.width) && (selectRect.y+selectRect.height) >= (seatRect.y+seatRect.height)){
+            seatRectList[i].attrs.fill = 'red';
+            seatRectList[i].Selected = true;
           }
           else{
-            seatRect[i].attrs.fill = 'white';
-            seatRect[i].Selected = false;
+            seatRectList[i].attrs.fill = 'white';
+            seatRectList[i].Selected = false;
           }
         }
         cursorRect.destroy();
       }
       cursorEventFlag = false;
       stage.draw();
+
+      this.props.onSeatSelected(seatRectList.filter((seatRect) => {return seatRect.Selected}));
     }
 
     stage.on('mousedown', (e) => {drawStart(e.evt.layerX,e.evt.layerY);});
     stage.on('mousemove', (e) => {drawMove(e.evt.layerX,e.evt.layerY);});
-    stage.on('mouseup', (e) => {drawEnd();});
+    stage.on('mouseup', (e) => {drawEnd()});
     stage.on('touchstart', (e) => {drawStart(e.currentTarget.pointerPos.x,e.currentTarget.pointerPos.y);});
     stage.on('touchmove', (e) => {drawMove(e.currentTarget.pointerPos.x,e.currentTarget.pointerPos.y);});
-    stage.on('touchend', (e) => {drawEnd();});
+    stage.on('touchend', (e) => {drawEnd()});
 
     stage.add(layer);
   }
 
   render() {
-    //const {screens} = this.props;
     return (
       <UI.Form>
         <UI.Segment basic>
-          <div ref={this.ref}>
-            <div ref={ref => this.drawKonva(ref)} />
-          </div>
+          <UI.Grid columns={3}>
+            <UI.Grid.Column verticalAlign="middle" width={2}>
+              <UI.Button icon='angle left' floated='left'/>
+            </UI.Grid.Column>
+            <UI.Grid.Column width={12}>
+              <div ref={this.ref}>
+                <div ref={ref => this.drawKonva(ref)} />
+              </div>
+            </UI.Grid.Column>
+            <UI.Grid.Column verticalAlign="middle" width={2}>
+              <UI.Button icon='angle right' floated='right'/>
+            </UI.Grid.Column>
+          </UI.Grid>
         </UI.Segment>
-        <UI.Button icon='angle left' floated='left'/>
-        <UI.Button icon='angle right' floated='right'/>
       </UI.Form>
     );
   }
