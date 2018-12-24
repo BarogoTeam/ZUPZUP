@@ -27,7 +27,7 @@ class NewAlarmPage extends React.PureComponent {
       return _.filter(cinemas, (cinema) => {
         return cinema.regionName
       }).map((cinema) => ({
-        code: cinema.cinemaid,
+        code: cinema.cinemaId,
         region: cinema.regionName,
         name: cinema.cinemaName,
         divisionCode: cinema.divisionCode,
