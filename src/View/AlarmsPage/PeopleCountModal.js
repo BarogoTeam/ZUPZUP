@@ -29,16 +29,6 @@ export default class CinemaModal extends React.PureComponent {
           label={{basic: true, content: '명'}}
           labelPosition='right'
           onChange={(event, target) => {
-            var s = target.value;
-            s += ''; // 문자열로 변환
-            s = s.replace(/^\s*|\s*$/g, ''); // 좌우 공백 제거
-            if (s === '' || isNaN(s)){
-              console.log('노정수');
-            }
-            else{
-              console.log('실수');
-            }
-
             if(target.value >= 1 && target.value < 9){
               this.setState({
                 PeopleCount : target.value
