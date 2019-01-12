@@ -18,7 +18,19 @@ class NewAlarmPage extends React.PureComponent {
       selectedCinemas: [],
       seats: [],
       loaded: false,
-      cinemas: []
+      cinemas: [],
+      selectedScreens:[
+        {
+          screenId: '302705',
+          cinemaId: '3027',
+          alarmDate: '2019-01-12'
+        }, 
+        {
+          screenId: '302706',
+          cinemaId: '3027',
+          alarmDate: '2019-01-12'
+        }
+      ]
     }
   }
 
@@ -111,6 +123,7 @@ class NewAlarmPage extends React.PureComponent {
           </UI.Grid.Row>
           <UI.Grid.Row>
             <SeatModal
+              selectedScreens={this.state.selectedScreens}
               onSeatsChanged={this.handleSeatsChanged}
             />
           </UI.Grid.Row>

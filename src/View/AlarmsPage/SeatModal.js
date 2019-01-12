@@ -6,10 +6,12 @@ import Konva from 'konva';
 
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
+    selectedScreens:PropTypes.arrayOf(PropTypes.object),
     selectedSeats: PropTypes.arrayOf(PropTypes.object),
     onSeatsChanged: PropTypes.func,
   }
   static defaultProps = {
+    selectedScreens: null,
     selectedSeats: null,
     onSeatsChanged: () => {},
   }
@@ -18,12 +20,14 @@ export default class SeatModal extends React.PureComponent {
   constructor() {
     super()
     this.state = {
+      selectedScreens: null,
       selectedSeats: null,
     }
   }
 
   handleOpen = () => {
     this.setState({
+      selectedScreens: this.props.selectedScreens,
       selectedRegion: null
     })
   }
@@ -37,9 +41,10 @@ export default class SeatModal extends React.PureComponent {
       selectedSeats
     })
   }
-
-  getSelectedSeats = (isExist, cinemaCode) => {
-
+  
+  getSeatLayouts = () => {
+    this.state.selectedScreens
+    console.log('김준혁때매 망함');
   }
 
   renderTriggerButton() {
@@ -51,6 +56,7 @@ export default class SeatModal extends React.PureComponent {
   }
 
   render(){
+    console.log("@@@", this.state.selectedScreens)
     return (
       <UI.Modal
         size="small"
