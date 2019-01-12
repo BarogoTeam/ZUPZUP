@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Konva from 'konva';
 
-const SeatInfo = require('./seatInfoExample.json')
-
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
     selectedSeats: PropTypes.arrayOf(PropTypes.object),
@@ -102,13 +100,40 @@ class SeatContent extends React.Component {
     })
   }
 
-  drawKonva(container) {
+  ButtonActionClick = (vector) => {
+    if(vector)  this.drawKonva(this.ref.current,require('./seatInfoExample.json'));
+    else  this.drawKonva(this.ref.current,require('./seatInfoExample2.json'));
+  }
+
+  render() {
+    return (
+      <UI.Form>
+        <UI.Segment basic>
+          <UI.Grid columns={3}>
+            <UI.Grid.Column verticalAlign="middle" width={2}>
+              <UI.Button icon='angle left' floated='left' onClick={() => {this.ButtonActionClick(false);}} />
+            </UI.Grid.Column>
+            <UI.Grid.Column width={12}>
+              <div ref={this.ref}>
+                <div ref={ref => this.drawKonva(ref,require('./seatInfoExample.json'))} />
+              </div>
+            </UI.Grid.Column>
+            <UI.Grid.Column verticalAlign="middle" width={2}>
+              <UI.Button icon='angle right' floated='right' onClick={() => {this.ButtonActionClick(true);}} />
+            </UI.Grid.Column>
+          </UI.Grid>
+        </UI.Segment>
+      </UI.Form>
+    );
+  }
+
+  drawKonva(container,seatInfo) {
     if (!container || this.state.clientWidth === 1) return;
     let cursorEventFlag;
     let cursorRect = null;
     let seatRectList;
-    let seatList = SeatInfo.Items;
     let maxx = 0, maxy = 0, minx = 999999, miny = 999999;
+    let seatList = seatInfo.Items;
 
     for(let seat of seatList){
       if(maxx < seat.SeatXCoordinate)  maxx = seat.SeatXCoordinate;
@@ -216,27 +241,5 @@ class SeatContent extends React.Component {
     stage.on('touchend', (e) => {drawEnd()});
 
     stage.add(layer);
-  }
-
-  render() {
-    return (
-      <UI.Form>
-        <UI.Segment basic>
-          <UI.Grid columns={3}>
-            <UI.Grid.Column verticalAlign="middle" width={2}>
-              <UI.Button icon='angle left' floated='left'/>
-            </UI.Grid.Column>
-            <UI.Grid.Column width={12}>
-              <div ref={this.ref}>
-                <div ref={ref => this.drawKonva(ref)} />
-              </div>
-            </UI.Grid.Column>
-            <UI.Grid.Column verticalAlign="middle" width={2}>
-              <UI.Button icon='angle right' floated='right'/>
-            </UI.Grid.Column>
-          </UI.Grid>
-        </UI.Segment>
-      </UI.Form>
-    );
   }
 }
