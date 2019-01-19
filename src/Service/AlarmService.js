@@ -52,4 +52,13 @@ export default class AlarmService {
       return response.json();
     })
   }
+
+  static getAlarm(userKey){
+    return fetch(`${BACKEND_URL}/alarms/${userKey}`, {
+      method: "GET",
+      headers: Header
+    }).then((response) => {
+      return response.json();
+    })
+  }
 }

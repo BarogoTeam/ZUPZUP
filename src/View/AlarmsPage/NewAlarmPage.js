@@ -86,6 +86,10 @@ class NewAlarmPage extends React.PureComponent {
     })
   }
 
+  postAlarm = () => {
+    console.log("start post...");
+  }
+
   render() {
     return (
       <UI.Container>
@@ -126,6 +130,12 @@ class NewAlarmPage extends React.PureComponent {
               selectedScreens={this.state.selectedScreens}
               onSeatsChanged={this.handleSeatsChanged}
             />
+          </UI.Grid.Row>
+          <UI.Grid.Row>
+            <UI.Button color="yellow" fluid circular
+               onClick={() => {this.postAlarm()}}>
+              <UI.Icon name='checkmark' /> 저장
+            </UI.Button>
           </UI.Grid.Row>
         </UI.Grid>
       </UI.Container>
