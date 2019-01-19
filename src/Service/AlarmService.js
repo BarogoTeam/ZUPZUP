@@ -53,7 +53,7 @@ export default class AlarmService {
     })
   }
 
-  static getAlarm(userKey){
+  static getAlarms(userKey){
     return fetch(`${BACKEND_URL}/alarms/${userKey}`, {
       method: "GET",
       headers: Header
