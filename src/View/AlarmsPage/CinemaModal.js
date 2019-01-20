@@ -13,23 +13,25 @@ const CinemaListItem = (props) => (
       {props.children}
     </UI.List.Item>
   )
-)
+);
+
 CinemaListItem.propTypes = {
   active: PropTypes.bool,
   children : PropTypes.node
-}
+};
 
 export default class CinemaModal extends React.PureComponent {
   static propTypes = {
     cinemas: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCinemaChanged: PropTypes.func,
-  }
+  };
+
   static defaultProps = {
     onCinemaChanged: () => {},
-  }
+  };
 
   constructor() {
-    super()
+    super();
     this.state = {
       selectedRegion: null,
       selectedCinemas: [],
@@ -40,35 +42,35 @@ export default class CinemaModal extends React.PureComponent {
     this.setState({
       selectedRegion: null
     })
-  }
+  };
 
   handleActionClick = () => {
     this.props.onCinemaChanged(this.state.selectedCinemas)
-  }
+  };
 
   handleRegionClick = (region) => {
     this.setState({
       selectedRegion: region
     })
-  }
+  };
 
-  getSelectedCinemas = (isExist, cinema) => {
-    // TODO(재연): 코드가 비직관적이므로 수정필요
-    if(!isExist) {
+  getSelectedCinemas = (cinema) => {
+    if(!this.state.selectedCinemas.includes(cinema)) {
       return this.state.selectedCinemas.concat([cinema]);
     }
 
     return this.state.selectedCinemas.filter((selectedCinema) => {
       return selectedCinema !== cinema;
     })
-  }
+  };
+
   handleCinemaClick = (cinema) => {
-    let selectedCinemas = this.getSelectedCinemas(this.state.selectedCinemas.includes(cinema), cinema);
+    let selectedCinemas = this.getSelectedCinemas(cinema);
 
     this.setState({
       selectedCinemas
     })
-  }
+  };
 
   renderTriggerButton() {
     return (
@@ -96,7 +98,8 @@ export default class CinemaModal extends React.PureComponent {
               </CinemaListItem>
             ))}
           </UI.List>
-          {this.state.selectedRegion && (            <UI.List selection>
+          {this.state.selectedRegion && (
+            <UI.List selection>
               <UI.List.Header> 영화관 </UI.List.Header>
               {filteredCinemas.map((cinema)=>(
                 <CinemaListItem

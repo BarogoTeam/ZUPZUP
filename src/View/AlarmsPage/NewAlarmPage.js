@@ -11,7 +11,7 @@ import Screens from './Screens';
 
 class NewAlarmPage extends React.PureComponent {
   constructor() {
-    super()
+    super();
     this.state = {
       peopleCount: null,
       date: null,
@@ -60,35 +60,35 @@ class NewAlarmPage extends React.PureComponent {
     this.setState({
       selectedCinemas
     })
-  }
+  };
 
   handlePeopleCountChanged = (peopleCount) => {
     this.setState({
       peopleCount
     })
-  }
+  };
 
   handleAlarmDateChanged = (selectedDay) => {
     this.setState({
       selectedDay
     })
-  }
+  };
 
   handleLoaded = (loaded) => {
     this.setState({
       loaded
     })
-  }
+  };
 
-  handleSeatsChanged = (seats) => {
+  handleSeatsSelected = (seats) => {
     this.setState({
       seats
     })
-  }
+  };
 
   postAlarm = () => {
     console.log("start post...");
-  }
+  };
 
   render() {
     return (
@@ -128,7 +128,7 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <SeatModal
               selectedScreens={this.state.selectedScreens}
-              onSeatsChanged={this.handleSeatsChanged}
+              onSeatsSelected={this.handleSeatsSelected}
             />
           </UI.Grid.Row>
           <UI.Grid.Row>

@@ -44,8 +44,14 @@ export default class AlarmService {
     })
   }
 
-  static getSeats(screens) {
-    return fetch(`${BACKEND_URL}/seats/${JSON.stringify}`, {
+  static getSeats(cinemaId, screenId, alarmDate) {
+    const queryString = objToQueryString({
+      cinemaId,
+      screenId,
+      alarmDate
+    });
+
+    return fetch(`${BACKEND_URL}/seats?${queryString}`, {
       method: "GET",
       headers: Header
     }).then((response) => {
