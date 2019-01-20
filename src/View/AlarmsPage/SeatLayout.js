@@ -37,24 +37,24 @@ export default class SeatLayout extends React.Component {
 
   render() {
     let seatRectList;
-    let maxx = 0, maxy = 0, minx = 999999, miny = 999999;
+    let maxX = 0, maxY = 0, minX = 999999, minY = 999999;
     let seatList = this.props.screenLayouts;
 
     for(let seat of seatList){
-      if(maxx < seat.seatXCoordinate)  maxx = seat.seatXCoordinate;
-      if(maxy < seat.seatYCoordinate)  maxy = seat.seatYCoordinate;
-      if(minx > seat.seatXCoordinate)  minx = seat.seatXCoordinate;
-      if(miny > seat.seatYCoordinate)  miny = seat.seatYCoordinate;
+      if(maxX < seat.seatXCoordinate)  maxX = seat.seatXCoordinate;
+      if(maxY < seat.seatYCoordinate)  maxY = seat.seatYCoordinate;
+      if(minX > seat.seatXCoordinate)  minX = seat.seatXCoordinate;
+      if(minY > seat.seatYCoordinate)  minY = seat.seatYCoordinate;
     }
-    let correction = maxx / 500 * 1.3;
 
+    let correction = maxX / 500 * 1.3; // ClientWidth 수정 고려
 
     seatRectList = seatList.map((seat, index) => {
       return {
         width: seat.seatXLength / correction,
         height: seat.seatYLength / correction,
-        x: (seat.seatXCoordinate - minx) / correction + 50,
-        y: (seat.seatYCoordinate - miny) / correction + (seat.seatYLength / correction) * 2,
+        x: (seat.seatXCoordinate - minX) / correction + 50,
+        y: (seat.seatYCoordinate - minY) / correction + (seat.seatYLength / correction) * 2,
         Selected: this.state.selectedSeats && this.state.selectedSeats[index]
       }
     });
@@ -73,7 +73,8 @@ export default class SeatLayout extends React.Component {
         cursorRectX: e.evt.offsetX,
         cursorRectY: e.evt.offsetY,
         cursorRectWidth: 1,
-        cursorRectHeight: 1
+        cursorRectHeight: 1,
+        selectedSeats: null
       })
     };
 
@@ -122,35 +123,37 @@ export default class SeatLayout extends React.Component {
       this.setState({
         cursorEventFlag: false
       });
-      this.props.onSeatsChanged(seatRectList.filter((seatRect) => seatRect.Selected));
+      this.props.onSeatsChanged(seatList.filter((seat, index) => seatRectList[index].Selected));
     };
 
-    return (<Stage width={(maxx - minx + seatList[0].seatXLength) / correction + 100}
-                   height={(maxy - miny + seatList[0].seatYLength)  / correction + 100}
-                   onMouseDown={handleDrawStart} onMouseMove={handleDrawMove} onMouseUp={handleDrawEnd}
-                   onDragStart={handleDrawStart} onDragMove={handleDrawMove} onDragEnd={handleDrawEnd}>
-      <Layer>
-        <Rect x={50}
-              y={10}
-              width={(maxx - minx + seatList[0].seatXLength) / correction}
-              height={seatList[0].seatYLength / correction}
-              fill={'black'}
-              stroke={'black'} />
+    return (
+      <Stage width={(maxX - minX + seatList[0].seatXLength) / correction + 100}
+             height={(maxY - minY + seatList[0].seatYLength)  / correction + 100}
+             onMouseDown={handleDrawStart} onMouseMove={handleDrawMove} onMouseUp={handleDrawEnd}
+             onDragStart={handleDrawStart} onDragMove={handleDrawMove} onDragEnd={handleDrawEnd}>
+        <Layer>
+          <Rect x={50}
+                y={10}
+                width={(maxX - minX + seatList[0].seatXLength) / correction}
+                height={seatList[0].seatYLength / correction}
+                fill={'black'}
+                stroke={'black'} />
 
-        {seatRectList.map((seatRect, index) => {
-          return (<Rect x={seatRect.x}
-                        y={seatRect.y}
-                        width={seatRect.width}
-                        height={seatRect.height}
-                        fill={'white'}
-                        stroke={seatRect.Selected ? 'red' : 'black'}
-                        strokeWidth={2}
-                        key={index} />)
+          {seatRectList.map((seatRect, index) => {
+            return (<Rect x={seatRect.x}
+                          y={seatRect.y}
+                          width={seatRect.width}
+                          height={seatRect.height}
+                          fill={'white'}
+                          stroke={seatRect.Selected ? 'red' : 'black'}
+                          strokeWidth={2}
+                          key={index} />)
 
-        })}
+          })}
 
-        {cursorRect}
-      </Layer>
-    </Stage>)
+          {cursorRect}
+        </Layer>
+      </Stage>
+    )
   }
 }
