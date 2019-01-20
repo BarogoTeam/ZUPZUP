@@ -3,7 +3,7 @@ import * as UI from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import AlarmService from "../../Service/AlarmService";
-import {ArrayClone} from "../../CommonUtil";
+import {ArrayClone, replaceAll} from "../../CommonUtil";
 import SeatLayout from "./SeatLayout";
 
 export default class SeatModal extends React.PureComponent {
@@ -18,7 +18,7 @@ export default class SeatModal extends React.PureComponent {
   };
 
   constructor() {
-    super()
+    super();
     this.state = {
       selectedScreens: null,
       selectedSeats: null,
@@ -28,7 +28,8 @@ export default class SeatModal extends React.PureComponent {
   handleOpen = () => {
     this.setState({
       selectedScreens: this.props.selectedScreens,
-      selectedRegion: null
+      selectedRegion: null,
+      selectedSeats: this.props.selectedScreens.map(_ => [])
     })
   };
 
@@ -36,16 +37,28 @@ export default class SeatModal extends React.PureComponent {
     this.props.onSeatsSelected(this.state.selectedSeats)
   };
 
-  handleSeatsChanged = (seats) => {
+  handleSeatsChanged = (seats, screenPage) => {
+    let selectedSeats = ArrayClone(this.state.selectedSeats);
+    selectedSeats[screenPage] = seats;
     this.setState({
-      selectedSeats: seats
+      selectedSeats
     })
   };
 
   renderTriggerButton() {
+    let text;
+
+    if(_.isEmpty(this.state.selectedSeats)) {
+      text = "좌석 선택"
+    } else {
+      let lengthList = this.state.selectedSeats.map(seat => seat.length);
+
+      text = (replaceAll(lengthList.toString(), ',', ', ')) + " 개 좌석"
+    }
+
     return (
       <UI.Button color="teal" fluid circular>
-        {_.isEmpty(this.state.selectedSeats) ? "좌석 선택" : this.state.selectedSeats.length + "개 좌석"}
+        {text}
       </UI.Button>
     )
   }
@@ -137,8 +150,9 @@ class SeatContent extends React.Component {
             </UI.Grid.Column>
             <UI.Grid.Column width={12}>
               <SeatLayout selectedScreens={this.props.selectedScreens[this.state.screenPage]}
-                          screenLayouts={this.state.screenLayouts[this.state.screenPage]}
-                          onSeatsChanged={this.props.onSeatsChanged} />
+                          screenLayouts={this.state.screenLayouts}
+                          onSeatsChanged={this.props.onSeatsChanged}
+                          screenPage={this.state.screenPage} />
             </UI.Grid.Column>
             <UI.Grid.Column verticalAlign="middle" width={2}>
               <UI.Button icon='angle right' floated='right' onClick={() => {this.nextButtonClick();}} />

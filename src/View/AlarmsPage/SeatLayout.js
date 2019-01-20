@@ -1,15 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Stage, Layer, Rect, Text} from "react-konva";
+import {ArrayClone} from "../../CommonUtil";
 
 export default class SeatLayout extends React.Component {
   static propTypes = {
+    screenPage: PropTypes.number,
     onSeatsChanged: PropTypes.func,
-    screenLayouts: PropTypes.arrayOf(PropTypes.object),
+    screenLayouts: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
     selectedScreens: PropTypes.object
   };
 
   static defaultProps = {
+    screenPage: 0,
     selectedSeats: null,
     screenLayouts: null,
     selectedScreens: null
@@ -30,9 +33,9 @@ export default class SeatLayout extends React.Component {
   }
 
   componentDidMount() {
-    let selectedSeats = this.props.screenLayouts.map(() => false);
+    let selectedSeats = this.props.screenLayouts.map((layout) => layout.map(_ => false));
     this.setState({
-      selectedSeats: selectedSeats,
+      selectedSeats,
       cursorEventFlag: false,
     })
   }
@@ -40,7 +43,7 @@ export default class SeatLayout extends React.Component {
   render() {
     let seatRectList;
     let maxX = 0, maxY = 0, minX = 999999, minY = 999999;
-    let seatList = this.props.screenLayouts;
+    let seatList = this.props.screenLayouts[this.props.screenPage];
 
     for(let seat of seatList){
       if(maxX < seat.seatXCoordinate)  maxX = seat.seatXCoordinate;
@@ -57,7 +60,7 @@ export default class SeatLayout extends React.Component {
         height: seat.seatYLength / correction,
         x: (seat.seatXCoordinate - minX) / correction + 50,
         y: (seat.seatYCoordinate - minY) / correction + (seat.seatYLength / correction) * 3,
-        Selected: this.state.selectedSeats && this.state.selectedSeats[index]
+        Selected: this.state.selectedSeats && this.state.selectedSeats[this.props.screenPage][index]
       }
     });
 
@@ -70,13 +73,16 @@ export default class SeatLayout extends React.Component {
                             strokeWidth={2} />);
 
     let handleDrawStart = (e) => {
+      let selectedSeats = ArrayClone(this.state.selectedSeats);
+      selectedSeats[this.props.screenPage] = seatRectList.map(_ => false)
+
       this.setState({
         cursorEventFlag: true,
         cursorRectX: e.evt.offsetX,
         cursorRectY: e.evt.offsetY,
         cursorRectWidth: 1,
         cursorRectHeight: 1,
-        selectedSeats: null
+        selectedSeats
       })
     };
 
@@ -115,8 +121,10 @@ export default class SeatLayout extends React.Component {
           cursorRect.height *= -1;
         }
 
+        let selectedSeats = ArrayClone(this.state.selectedSeats);
+        selectedSeats[this.props.screenPage] = seatRectList.map((seatRect) => isInside(cursorRect, seatRect))
         this.setState({
-          selectedSeats: seatRectList.map((seatRect) => isInside(cursorRect, seatRect))
+          selectedSeats
         });
       }
     };
@@ -125,7 +133,7 @@ export default class SeatLayout extends React.Component {
       this.setState({
         cursorEventFlag: false
       });
-      this.props.onSeatsChanged(seatList.filter((seat, index) => seatRectList[index].Selected));
+      this.props.onSeatsChanged(seatList.filter((seat, index) => seatRectList[index].Selected), this.props.screenPage);
     };
 
     return (
