@@ -123,7 +123,7 @@ class SeatContent extends React.Component {
 
   prevButtonClick() {
     this.setState({
-      screenPage: this.state.screenPage === 0 ? this.state.screenPage - 1 : this.props.selectedScreens.length - 1
+      screenPage: this.state.screenPage === 0 ? this.props.selectedScreens.length - 1 : this.state.screenPage - 1
     })
   }
 
@@ -136,7 +136,8 @@ class SeatContent extends React.Component {
               <UI.Button icon='angle left' floated='left' onClick={() => {this.prevButtonClick();}} />
             </UI.Grid.Column>
             <UI.Grid.Column width={12}>
-              <SeatLayout screenLayouts={this.state.screenLayouts[this.state.screenPage]}
+              <SeatLayout selectedScreens={this.props.selectedScreens[this.state.screenPage]}
+                          screenLayouts={this.state.screenLayouts[this.state.screenPage]}
                           onSeatsChanged={this.props.onSeatsChanged} />
             </UI.Grid.Column>
             <UI.Grid.Column verticalAlign="middle" width={2}>

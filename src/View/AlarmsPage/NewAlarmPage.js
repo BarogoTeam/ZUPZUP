@@ -21,12 +21,16 @@ class NewAlarmPage extends React.PureComponent {
       cinemas: [],
       selectedScreens:[
         {
-          screenId: '302705',
+          cinemaName: '광명(광명사거리)',
+          screenNameKr: '3관',
+          screenId: '302703',
           cinemaId: '3027',
           alarmDate: '2019-01-12'
-        }, 
+        },
         {
-          screenId: '302706',
+          cinemaName: '광명(광명사거리)',
+          screenNameKr: '5관',
+          screenId: '302705',
           cinemaId: '3027',
           alarmDate: '2019-01-12'
         }

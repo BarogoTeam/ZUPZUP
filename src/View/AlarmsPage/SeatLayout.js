@@ -1,16 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Stage, Layer, Rect} from "react-konva";
+import {Stage, Layer, Rect, Text} from "react-konva";
 
 export default class SeatLayout extends React.Component {
   static propTypes = {
     onSeatsChanged: PropTypes.func,
-    screenLayouts: PropTypes.arrayOf(PropTypes.object)
+    screenLayouts: PropTypes.arrayOf(PropTypes.object),
+    selectedScreens: PropTypes.object
   };
 
   static defaultProps = {
     selectedSeats: null,
     screenLayouts: null,
+    selectedScreens: null
   };
 
   constructor() {
@@ -54,7 +56,7 @@ export default class SeatLayout extends React.Component {
         width: seat.seatXLength / correction,
         height: seat.seatYLength / correction,
         x: (seat.seatXCoordinate - minX) / correction + 50,
-        y: (seat.seatYCoordinate - minY) / correction + (seat.seatYLength / correction) * 2,
+        y: (seat.seatYCoordinate - minY) / correction + (seat.seatYLength / correction) * 3,
         Selected: this.state.selectedSeats && this.state.selectedSeats[index]
       }
     });
@@ -132,12 +134,29 @@ export default class SeatLayout extends React.Component {
              onMouseDown={handleDrawStart} onMouseMove={handleDrawMove} onMouseUp={handleDrawEnd}
              onDragStart={handleDrawStart} onDragMove={handleDrawMove} onDragEnd={handleDrawEnd}>
         <Layer>
-          <Rect x={50}
+          <Text x={50}
                 y={10}
                 width={(maxX - minX + seatList[0].seatXLength) / correction}
                 height={seatList[0].seatYLength / correction}
                 fill={'black'}
-                stroke={'black'} />
+                text={`${this.props.selectedScreens.cinemaName} ${this.props.selectedScreens.screenNameKr}`}
+                fontStyle={'bold'}
+                align={'center'} />
+
+          <Rect x={50}
+                y={seatList[0].seatYLength / correction + 10}
+                width={(maxX - minX + seatList[0].seatXLength) / correction}
+                height={seatList[0].seatYLength / correction}
+                fill={'black'} />
+
+          <Text x={50}
+                y={seatList[0].seatYLength / correction + 10}
+                width={(maxX - minX + seatList[0].seatXLength) / correction}
+                height={seatList[0].seatYLength / correction}
+                fill={'white'}
+                align={'center'}
+                verticalAlign={'middle'}
+                text={'SCREEN'} />
 
           {seatRectList.map((seatRect, index) => {
             return (<Rect x={seatRect.x}
