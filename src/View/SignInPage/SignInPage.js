@@ -1,5 +1,5 @@
 import React from "react";
-import LoginService from "../../Service/LoginService";
+import SignInService from "../../Service/SignInService";
 import * as UI from "semantic-ui-react";
 import {Redirect} from "react-router-dom";
 
@@ -7,24 +7,27 @@ export default class SignInPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      password: ''
+      isSigned: localStorage.getItem("token"),
+      email: 'ZupzupCrawler@zupzup.com',
+      password: 'examplepassword'
     }
   }
 
-  loginClick(email, password) {
+  onSignInClick(email, password) {
     console.log(email, password);
-    LoginService.signIn(email, password).then((token) => {
+    SignInService.signIn(email, password).then((token) => {
       localStorage.setItem("token", token);
-      console.log("Login Success");
+      console.log("SignIn Success");
+      this.setState({isSigned: true});
     }).catch((e) => {
-      console.log("Login Failed", e);
+      console.log("SignIn Failed", e);
     });
   }
 
   render() {
     return (
       <UI.Segment padded='very' textAlign='left' secondary>
-        {localStorage.getItem("token") && <Redirect to="/alarms" />}
+        {this.state.isSigned && <Redirect to="/alarms" />}
         <UI.Form>
           <UI.Form.Field>
             <label>EMAIL</label>
@@ -43,7 +46,7 @@ export default class SignInPage extends React.Component {
             }} />
           </UI.Form.Field>
           <UI.Form.Field>
-            <UI.Button fluid color='teal' onClick={() => {this.loginClick(this.state.email, this.state.password)}}>Sign In</UI.Button>
+            <UI.Button fluid color='teal' onClick={() => {this.onSignInClick(this.state.email, this.state.password)}}>Sign In</UI.Button>
           </UI.Form.Field>
           <UI.Form.Field>
             <UI.ButtonGroup attached='bottom' widths='2'>

@@ -1,7 +1,7 @@
 import { BACKEND_URL } from '../Constants';
 import {responseHandler, Header} from "./ServiceUtil";
 
-export default class LoginService {
+export default class SignInService {
   static signIn(email, password) {
     return fetch(`${BACKEND_URL}/signIn`, {
       method: "POST",
