@@ -1,6 +1,6 @@
 import React from 'react';
 import * as UI from 'semantic-ui-react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import AlarmListItem from '../../Component/AlarmListItem/AlarmListItem';
 import AlarmService from "../../Service/AlarmService";
 
@@ -19,6 +19,7 @@ class AlarmsPage extends React.PureComponent {
   render() {
     return (
       <div>
+        {!localStorage.getItem("token") && <Redirect to="/" />}
         <UI.Grid columns={2}>
           {
             this.state.alarms.map((alarmInfo, index) =>

@@ -1,7 +1,7 @@
 import React from "react";
 import LoginService from "../../Service/LoginService";
-import {Header} from "../../Service/ServiceUtil";
 import * as UI from "semantic-ui-react";
+import {Redirect} from "react-router-dom";
 
 export default class SignInPage extends React.Component {
   constructor() {
@@ -14,7 +14,7 @@ export default class SignInPage extends React.Component {
   loginClick(email, password) {
     console.log(email, password);
     LoginService.signIn(email, password).then((token) => {
-      Header.append('Authorization', 'Bearer ' + token);
+      localStorage.setItem("token", token);
       console.log("Login Success");
     }).catch((e) => {
       console.log("Login Failed", e);
@@ -24,6 +24,7 @@ export default class SignInPage extends React.Component {
   render() {
     return (
       <UI.Segment padded='very' textAlign='left' secondary>
+        {localStorage.getItem("token") && <Redirect to="/alarms" />}
         <UI.Form>
           <UI.Form.Field>
             <label>EMAIL</label>

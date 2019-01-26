@@ -8,6 +8,7 @@ import DateModal from "./DateModal";
 import PeopleCountModal from "./PeopleCountModal"
 import AlarmService from '../../Service/AlarmService';
 import Screens from './Screens';
+import {Redirect} from "react-router-dom";
 
 class NewAlarmPage extends React.PureComponent {
   constructor() {
@@ -97,6 +98,7 @@ class NewAlarmPage extends React.PureComponent {
   render() {
     return (
       <UI.Container>
+        {!localStorage.getItem("token") && <Redirect to="/" />}
         <UI.Dimmer active={!this.state.loaded}>
           <UI.Loader>Loading</UI.Loader>
         </UI.Dimmer>
@@ -136,8 +138,7 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            <UI.Button color="yellow" fluid circular
-               onClick={() => {this.postAlarm()}}>
+            <UI.Button color="yellow" fluid circular onClick={() => {this.postAlarm()}}>
               <UI.Icon name='checkmark' /> 저장
             </UI.Button>
           </UI.Grid.Row>

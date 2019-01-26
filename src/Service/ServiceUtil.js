@@ -1,5 +1,10 @@
-export const Header = new Headers();
-Header.append("Content-Type", "application/json");
+
+export function Header() {
+  const Header = new Headers();
+  Header.append("Content-Type", "application/json");
+  Header.append('Authorization', 'Bearer ' + localStorage.getItem("token"));
+  return Header;
+}
 
 export function objToQueryString(obj) {
   const keyValuePairs = [];

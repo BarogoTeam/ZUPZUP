@@ -5,7 +5,7 @@ export default class AlarmService {
   static getCinemas() {
     return fetch(`${BACKEND_URL}/cinemas`, {
       method: "GET",
-      headers: Header
+      headers: Header()
     }).then((response) => {
       return response.json();
     })
@@ -19,7 +19,7 @@ export default class AlarmService {
 
     return fetch(`${BACKEND_URL}/screens?${queryString}`, {
       method: "GET",
-      headers: Header
+      headers: Header()
     }).then((response) => {
       return response.json();
     })
@@ -28,7 +28,7 @@ export default class AlarmService {
   static getMovie(movieCode) {
     return fetch(`${BACKEND_URL}/movies/${movieCode}`, {
       method: "GET",
-      headers: Header
+      headers: Header()
     }).then((response) => {
       return response.json();
     })
@@ -43,7 +43,7 @@ export default class AlarmService {
 
     return fetch(`${BACKEND_URL}/seats?${queryString}`, {
       method: "GET",
-      headers: Header
+      headers: Header()
     }).then((response) => {
       return response.json();
     })
@@ -52,7 +52,7 @@ export default class AlarmService {
   static getAlarms(){
     return fetch(`${BACKEND_URL}/alarms`, {
       method: "GET",
-      headers: Header
+      headers: Header()
     }).then(responseHandler);
   }
 }

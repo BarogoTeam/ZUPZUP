@@ -5,7 +5,7 @@ export default class LoginService {
   static signIn(email, password) {
     return fetch(`${BACKEND_URL}/signIn`, {
       method: "POST",
-      headers: Header,
+      headers: Header(),
       body: JSON.stringify({
         email,
         password
