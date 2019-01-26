@@ -7,33 +7,48 @@ import AlarmService from "../../Service/AlarmService";
 class AlarmsPage extends React.PureComponent {
   constructor() {
     super();
-    this.state = { alarms: [] };
+    this.state = {
+      alarms: [],
+      loaded: null
+    };
   }
 
   componentDidMount() {
     AlarmService.getAlarms().then((alarms)=> {
-      this.setState({alarms});
+      this.setState({
+        alarms,
+        loaded: true
+      });
     });
   }
 
   render() {
-    return (
-      <div>
-        {!localStorage.getItem("token") && <Redirect to="/" />}
-        <UI.Grid columns={2}>
-          {
-            this.state.alarms.map((alarmInfo, index) =>
-              <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} key={index}/>
-            )
-          }
-        </UI.Grid>
-        <Link to="/alarms/new">
-          <UI.Button fluid basic>
-            <UI.Icon name="plus" />
-          </UI.Button>
-        </Link>
-      </div>
-    );
+    if(this.state.loaded) {
+      return (
+        <div>
+          {!localStorage.getItem("token") && <Redirect to="/" />}
+          <UI.Grid columns={2}>
+            {
+              this.state.alarms.map((alarmInfo, index) =>
+                <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} key={index}/>
+              )
+            }
+          </UI.Grid>
+          <Link to="/alarms/new">
+            <UI.Button fluid basic>
+              <UI.Icon name="plus" />
+            </UI.Button>
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{height: "400px"}}>
+          <UI.Dimmer inverted active={true}>
+            <UI.Loader>Loading</UI.Loader>
+          </UI.Dimmer>
+        </div>)
+    }
   }
 }
 
