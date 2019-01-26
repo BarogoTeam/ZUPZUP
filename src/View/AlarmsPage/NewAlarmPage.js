@@ -11,7 +11,7 @@ import Screens from './Screens';
 
 class NewAlarmPage extends React.PureComponent {
   constructor() {
-    super()
+    super();
     this.state = {
       peopleCount: null,
       date: null,
@@ -21,12 +21,16 @@ class NewAlarmPage extends React.PureComponent {
       cinemas: [],
       selectedScreens:[
         {
-          screenId: '302705',
+          cinemaName: '광명(광명사거리)',
+          screenNameKr: '3관',
+          screenId: '302703',
           cinemaId: '3027',
           alarmDate: '2019-01-12'
-        }, 
+        },
         {
-          screenId: '302706',
+          cinemaName: '광명(광명사거리)',
+          screenNameKr: '5관',
+          screenId: '302705',
           cinemaId: '3027',
           alarmDate: '2019-01-12'
         }
@@ -60,35 +64,35 @@ class NewAlarmPage extends React.PureComponent {
     this.setState({
       selectedCinemas
     })
-  }
+  };
 
   handlePeopleCountChanged = (peopleCount) => {
     this.setState({
       peopleCount
     })
-  }
+  };
 
   handleAlarmDateChanged = (selectedDay) => {
     this.setState({
       selectedDay
     })
-  }
+  };
 
   handleLoaded = (loaded) => {
     this.setState({
       loaded
     })
-  }
+  };
 
-  handleSeatsChanged = (seats) => {
+  handleSeatsSelected = (seats) => {
     this.setState({
       seats
     })
-  }
+  };
 
   postAlarm = () => {
     console.log("start post...");
-  }
+  };
 
   render() {
     return (
@@ -128,7 +132,7 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <SeatModal
               selectedScreens={this.state.selectedScreens}
-              onSeatsChanged={this.handleSeatsChanged}
+              onSeatsSelected={this.handleSeatsSelected}
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
