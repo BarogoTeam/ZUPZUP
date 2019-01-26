@@ -112,13 +112,13 @@ export default class SeatLayout extends React.Component {
         };
 
         if(cursorRect.width < 0) {
-          cursorRect.x += cursorRect.width;
           cursorRect.width *= -1;
+          cursorRect.x -= cursorRect.width;
         }
 
         if(cursorRect.height < 0) {
-          cursorRect.y += cursorRect.height;
           cursorRect.height *= -1;
+          cursorRect.y -= cursorRect.height;
         }
 
         let selectedSeats = ArrayClone(this.state.selectedSeats);
