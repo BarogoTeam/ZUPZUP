@@ -2,7 +2,6 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import * as UI from 'semantic-ui-react';
 import NavBar from '../NavBar/NavBar'
-import LoginSegment from '../../View/UserPage/LoginSegment';
 
 export default class Layout extends React.PureComponent {
 
@@ -55,17 +54,6 @@ export default class Layout extends React.PureComponent {
               Movies
             </UI.Menu.Item>
           </Link>
-        </UI.Sidebar>
-        <UI.Sidebar
-          as={UI.Menu}
-          animation='push'
-          width='wide'
-          icon='labeled'
-          direction='right'
-          vertical
-          visible={activeMenu === 'right'}
-        >
-          <LoginSegment></LoginSegment>
         </UI.Sidebar>
         <UI.Dimmer.Dimmable blurring dimmed={activeMenu !== null}>
           <NavBar

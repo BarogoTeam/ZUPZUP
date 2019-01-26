@@ -28,15 +28,6 @@ export default class NavBar extends React.PureComponent {
         >
           Testimonials
         </UI.Menu.Item>
-
-        <UI.Menu.Item
-          name='sign-in'
-          active={activeItem === 'sign-in'}
-          onClick={() => {activateMenu('right')}}
-          position='right'
-        >
-          Sign-in
-        </UI.Menu.Item>
       </UI.Menu>
     )
   }

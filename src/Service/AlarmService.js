@@ -1,15 +1,5 @@
 import { BACKEND_URL } from '../Constants';
-
-function objToQueryString(obj) {
-  const keyValuePairs = [];
-  for (const key in obj) {
-    keyValuePairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
-  }
-  return keyValuePairs.join('&');
-}
-
-const Header = new Headers();
-Header.append("Content-Type", "application/json");
+import {objToQueryString, Header, responseHandler} from "./ServiceUtil";
 
 export default class AlarmService {
   static getCinemas() {
@@ -59,12 +49,10 @@ export default class AlarmService {
     })
   }
 
-  static getAlarms(userKey){
-    return fetch(`${BACKEND_URL}/alarms/${userKey}`, {
+  static getAlarms(){
+    return fetch(`${BACKEND_URL}/alarms`, {
       method: "GET",
       headers: Header
-    }).then((response) => {
-      return response.json();
-    })
+    }).then(responseHandler);
   }
 }
