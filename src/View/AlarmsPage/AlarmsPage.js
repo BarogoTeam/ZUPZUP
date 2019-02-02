@@ -23,14 +23,17 @@ class AlarmsPage extends React.PureComponent {
   }
 
   render() {
+    if(!localStorage.getItem("token")) {
+      return (<Redirect to="/" />)
+    }
+
     if(this.state.loaded) {
       return (
         <div>
-          {!localStorage.getItem("token") && <Redirect to="/" />}
           <UI.Grid columns={2}>
             {
-              this.state.alarms.map((alarmInfo, index) =>
-                <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} key={index}/>
+              this.state.alarms.map((alarmInfo) =>
+                <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} />
               )
             }
           </UI.Grid>
