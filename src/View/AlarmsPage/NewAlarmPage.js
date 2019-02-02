@@ -15,25 +15,29 @@ class NewAlarmPage extends React.PureComponent {
     super();
     this.state = {
       peopleCount: null,
-      date: null,
+      selectedDate: null,
+      weekDays: [1, 5, 6],
       selectedCinemas: [],
       seats: [],
       loaded: false,
       cinemas: [],
+      selectedMovieId: null,
       selectedScreens:[
         {
           cinemaName: '광명(광명사거리)',
           screenNameKr: '3관',
+          screenDivisionNameKr: '4D',
           screenId: '302703',
           cinemaId: '3027',
-          alarmDate: '2019-01-12'
+          startTime: "18:00"
         },
         {
           cinemaName: '광명(광명사거리)',
           screenNameKr: '5관',
+          screenDivisionNameKr: '3D',
           screenId: '302705',
           cinemaId: '3027',
-          alarmDate: '2019-01-12'
+          startTime: "16:00"
         }
       ]
     }
@@ -73,9 +77,9 @@ class NewAlarmPage extends React.PureComponent {
     })
   };
 
-  handleAlarmDateChanged = (selectedDay) => {
+  handleAlarmDateChanged = (selectedDate) => {
     this.setState({
-      selectedDay
+      selectedDate
     })
   };
 
@@ -92,7 +96,15 @@ class NewAlarmPage extends React.PureComponent {
   };
 
   postAlarm = () => {
-    console.log("start post...");
+    let body = {
+      movieId: this.state.selectedMovieId,
+      date: this.state.selectedDate,
+      weekDays: this.state.weekDays,
+      reservationNumber: this.state.peopleCount,
+      alarms: this.state.selectedScreens.map((cinema, index) => Object.assign({}, cinema, {seatNoList: this.state.seats[index]}))
+    };
+
+    AlarmService.postAlarms(body);
   };
 
   render() {
@@ -113,7 +125,7 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <DateModal
               onAlarmDateChanged={this.handleAlarmDateChanged}
-              selectedDay={this.state.selectedDay}/>
+              selectedDate={this.state.selectedDate} />
           </UI.Grid.Row>
           <UI.Grid.Row>
             <CinemaModal
@@ -123,16 +135,17 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            {this.state.selectedDay && !_.isEmpty(this.state.selectedCinemas) && 
+            {this.state.selectedDate && !_.isEmpty(this.state.selectedCinemas) &&
               <Screens
-                key={`${this.state.selectedDay.format('YYYY-MM-DD')},${this.state.selectedCinemas.join(',')}`}
-                alarmDate={this.state.selectedDay}
+                key={`${this.state.selectedDate},${this.state.selectedCinemas.join(',')}`}
+                alarmDate={this.state.selectedDate}
                 cinemas={this.state.selectedCinemas}
               />
             }
           </UI.Grid.Row>
           <UI.Grid.Row>
             <SeatModal
+              selectedDate={this.state.selectedDate}
               selectedScreens={this.state.selectedScreens}
               onSeatsSelected={this.handleSeatsSelected}
             />

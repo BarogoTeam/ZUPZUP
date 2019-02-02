@@ -14,7 +14,7 @@ export default class AlarmService {
   static getScreens(cinemas, alarmDate) {
     const queryString = objToQueryString({
       cinemaIds : cinemas.map(cinema => `${cinema.divisionCode}|${cinema.detailDivisionCode}|${cinema.code}`).join(','),
-      alarmDate: alarmDate.format('YYYY-MM-DD')
+      alarmDate: alarmDate
     });
 
     return fetch(`${BACKEND_URL}/screens?${queryString}`, {
@@ -53,6 +53,14 @@ export default class AlarmService {
     return fetch(`${BACKEND_URL}/alarms`, {
       method: "GET",
       headers: Header()
+    }).then(responseHandler);
+  }
+
+  static postAlarms(body) {
+    return fetch(`${BACKEND_URL}/alarms`, {
+      method: "POST",
+      headers: Header(),
+      body: JSON.stringify(body)
     }).then(responseHandler);
   }
 }

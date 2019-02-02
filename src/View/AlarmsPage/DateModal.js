@@ -6,8 +6,8 @@ import _ from 'lodash';
 
 export default class DateModal extends React.PureComponent {
   static propTypes = {
-    alarmDate: PropTypes.string,
     onAlarmDateChanged: PropTypes.func,
+    selectedDate: PropTypes.string
   }
   static defaultProps = {
     onAlarmDateChanged: () => {},
@@ -16,7 +16,7 @@ export default class DateModal extends React.PureComponent {
   renderTriggerButton() {
     return (
       <UI.Button color="teal" fluid circular>
-        {_.isEmpty(this.props.selectedDay) ? "날짜 선택" : this.props.selectedDay.format('YYYY/MM/DD')}
+        {_.isEmpty(this.props.selectedDate) ? "날짜 선택" : this.props.selectedDate}
       </UI.Button>
     )
   }
@@ -25,7 +25,7 @@ export default class DateModal extends React.PureComponent {
     super();
     this.state = {
       selectedMonth: moment(new Date()),
-      selectedDay: moment(new Date())
+      selectedDay: moment(new Date()) //TODO: Month 는 월만 저장하고 Day 는 월과 일을 저장하는 로직 가독성 개선 필요 - Conan
     }
   }
 
@@ -37,7 +37,7 @@ export default class DateModal extends React.PureComponent {
 
   handleActionClick = () => {
     //console.log(this.state.selectedDay.format('YYYYMMDD'))
-    this.props.onAlarmDateChanged(this.state.selectedDay)
+    this.props.onAlarmDateChanged(this.state.selectedDay.format("YYYY-MM-DD"))
   }
 
   renderContent() {
@@ -66,7 +66,7 @@ export default class DateModal extends React.PureComponent {
       this.setState({
         selectedDay : this.state.selectedMonth.set("date",target.value)
       })
-    }}/>
+    }} />
 
     return (
       <UI.Modal.Content>

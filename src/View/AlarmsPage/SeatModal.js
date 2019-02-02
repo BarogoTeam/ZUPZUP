@@ -8,11 +8,13 @@ import SeatLayout from "./SeatLayout";
 
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
+    selectedDate: PropTypes.string,
     selectedScreens:PropTypes.arrayOf(PropTypes.object),
     onSeatsSelected: PropTypes.func,
   };
 
   static defaultProps = {
+    selectedDate: null,
     selectedScreens: null,
     selectedSeats: null,
   };
@@ -34,7 +36,8 @@ export default class SeatModal extends React.PureComponent {
   };
 
   handleActionClick = () => {
-    this.props.onSeatsSelected(this.state.selectedSeats)
+    let seatNoList = this.state.selectedSeats.map(screen => screen.map(seat => seat.seatNo));
+    this.props.onSeatsSelected(seatNoList)
   };
 
   handleSeatsChanged = (seats, screenPage) => {
@@ -75,6 +78,7 @@ export default class SeatModal extends React.PureComponent {
           </UI.Button>
         ]}
         content={<SeatContent onSeatsChanged={this.handleSeatsChanged}
+                              selectedDate={this.props.selectedDate}
                               selectedScreens={this.state.selectedScreens}
                               selectedSeats={[null]} />}
         onOpen={this.handleOpen}
@@ -86,11 +90,13 @@ export default class SeatModal extends React.PureComponent {
 
 class SeatContent extends React.Component {
   static propTypes = {
+    selectedDate: PropTypes.string,
     selectedScreens: PropTypes.arrayOf(PropTypes.object),
     onSeatsChanged: PropTypes.func
   };
 
   static defaultProps = {
+    selectedDate: null,
     selectedSeats: null,
     selectedScreens: [],
   };
@@ -112,8 +118,8 @@ class SeatContent extends React.Component {
 
   componentDidMount() {
     for(let page=0; page < this.props.selectedScreens.length; page++) {
-      const {cinemaId, screenId, alarmDate} = this.props.selectedScreens[page];
-      AlarmService.getSeats(cinemaId, screenId, alarmDate).then((response) => {
+      const {cinemaId, screenId} = this.props.selectedScreens[page];
+      AlarmService.getSeats(cinemaId, screenId, this.props.selectedDate).then((response) => {
         const newLoadState = ArrayClone(this.state.loaded);
         const newScreenLayouts = ArrayClone(this.state.screenLayouts);
 
