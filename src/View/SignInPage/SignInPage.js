@@ -8,7 +8,7 @@ export default class SignInPage extends React.Component {
     super();
     this.state = {
       isSigned: localStorage.getItem("token"),
-      email: 'ZupzupCrawler@zupzup.com',
+      email: 'example@example.com',
       password: 'examplepassword'
     }
   }

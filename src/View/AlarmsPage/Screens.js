@@ -15,33 +15,41 @@ class MovieScreens extends React.PureComponent {
       .then(movie => this.setState({ movie }));
   }
 
+  onClick(movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected) {
+    this.props.onScreenChanged(movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected);
+  
+  }
+
   render() {
     const { movie } = this.state;
     const { screens } = this.props;
+
     if (!movie) return <UI.Loader active />;
 
     return (
       <React.Fragment>
         <UI.Item.Meta content={movie.movieNameKr} />
-        {_.map(screens, (screen, screenId) => (
-          <UI.Item.Description key={screenId}>
+          {_.map(screens, (screen, screenId) => (
+            <UI.Item.Description key={screenId}>
             <UI.Button basic compact size="mini" floated="right" content={screen[0].screenNameKr} />
             {screen.map(sequence => (
-              <UI.Label as='a' key={sequence.playSequence}>
+              <UI.Label as='a' key={sequence.playSequence} onClick={() => {console.log("cinemaId!",this.props.cinemaId); this.onClick(movie.movieNameKr, screen[0].screenNameKr, sequence.startTime, screen[0].screenId, this.props.cinemaId, true)}}>
                 {sequence.startTime}
+                
                 <UI.LabelDetail content={sequence.endTime}/>
               </UI.Label>
             ))}
-          </UI.Item.Description>
-        ))}
+          </UI.Item.Description>          
+          ))}
       </React.Fragment>
-    );  
+    );
   }
 }
 
 export default class Screens extends React.PureComponent {
   constructor(props) {
     super(props)
+    
     this.state = {
       cinemaMovieScreens: []
     }
@@ -79,7 +87,7 @@ export default class Screens extends React.PureComponent {
             <UI.Item.Header content={_.find(cinemas, ['code', _.toNumber(cinemaId)]).name} />
             <UI.Item.Content>
               {_.map(movieScreens, (screens, movieCode) => (
-                <MovieScreens key={movieCode} movieCode={movieCode} screens={screens} />
+                <MovieScreens key={movieCode} movieCode={movieCode} screens={screens} cinemaId = {cinemaId} onScreenChanged={this.props.onScreenChanged}/>
               ))}
             </UI.Item.Content>
           </UI.Item>
