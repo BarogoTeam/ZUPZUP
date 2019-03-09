@@ -15,8 +15,8 @@ class MovieScreens extends React.PureComponent {
       .then(movie => this.setState({ movie }));
   }
 
-  onClick(movieId, movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected) {
-    this.props.onScreenChanged(movieId, movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected);
+  onClick(movieId, movieNameKr, screenNameKr, startTime, endTime, screenId, cinemaId, playSequence, isSelected) {
+    this.props.onScreenChanged(movieId, movieNameKr, screenNameKr, startTime, endTime, screenId, cinemaId, playSequence, isSelected);
   
   }
 
@@ -33,7 +33,7 @@ class MovieScreens extends React.PureComponent {
             <UI.Item.Description key={screenId}>
             <UI.Button basic compact size="mini" floated="right" content={screen[0].screenNameKr} />
             {screen.map(sequence => (
-              <UI.Label as='a' key={sequence.playSequence} onClick={() => {console.log("cinemaId!",this.props.cinemaId); this.onClick(this.props.movieCode, movie.movieNameKr, screen[0].screenNameKr, sequence.startTime, screen[0].screenId, this.props.cinemaId, true)}}>
+              <UI.Label as='a' key={sequence.playSequence} onClick={() => {this.props.movieCode, this.onClick(movie.movieNameKr, screen[0].screenNameKr, sequence.startTime, sequence.endTime, screen[0].screenId, this.props.cinemaId, sequence.playSequence, true)}}>
                 {sequence.startTime}
                 
                 <UI.LabelDetail content={sequence.endTime}/>

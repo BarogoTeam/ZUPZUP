@@ -82,13 +82,15 @@ class NewAlarmPage extends React.PureComponent {
     })
   };
 
-  handleScreenChanged = (movieId, movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected) => {
+  handleScreenChanged = (movieId, movieNameKr, screenNameKr, startTime, endTime, screenId, cinemaId, playSequence, isSelected) => {
     let screen = {
       movieNameKr,
       screenNameKr,
       startTime,
+      endTime,
       screenId,
-      cinemaId
+      cinemaId,
+      playSequence
     }
     if(isSelected) {
       if(!this.state.selectedScreens.includes(screen)) {
@@ -106,7 +108,7 @@ class NewAlarmPage extends React.PureComponent {
       })
       this.setState({
         movieId,
-        selectedScreens 
+        selectedScreens
       })
     }
   }
