@@ -10,6 +10,7 @@ class BasicRouter extends React.Component { // SUGGESTION: Move back to App.js, 
     return (
       <Switch>
         <Route exact path="/" component={SignInPage} />
+        <Route path="/signin" component={SignInPage} />
         <Route path="/alarms/new" component={NewAlarmPage} />
         <Route path="/alarms" component={AlarmsPage} />
         <Route path="/movies" component={MoviesPage} />
