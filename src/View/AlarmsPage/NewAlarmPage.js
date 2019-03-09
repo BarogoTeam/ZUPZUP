@@ -21,7 +21,7 @@ class NewAlarmPage extends React.PureComponent {
       seats: [],
       loaded: false,
       cinemas: [],
-      selectedMovieId: null,
+      movieId: null,
       selectedScreens:[]
         // {
         //   cinemaName: '광명(광명사거리)',
@@ -82,8 +82,7 @@ class NewAlarmPage extends React.PureComponent {
     })
   };
 
-  handleScreenChanged = (movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected) => {
-    console.log("Here! parent")
+  handleScreenChanged = (movieId, movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected) => {
     let screen = {
       movieNameKr,
       screenNameKr,
@@ -97,6 +96,7 @@ class NewAlarmPage extends React.PureComponent {
         selectedScreens.push(screen);
 
         this.setState({
+          movieId,
           selectedScreens
         })
       }
@@ -105,10 +105,10 @@ class NewAlarmPage extends React.PureComponent {
         return selectedScreen !== screen;
       })
       this.setState({
+        movieId,
         selectedScreens 
       })
     }
-    console.log(this.state.selectedScreens);
   }
   handleLoaded = (loaded) => {
     this.setState({
@@ -124,7 +124,7 @@ class NewAlarmPage extends React.PureComponent {
 
   postAlarm = () => {
     let body = {
-      movieId: this.state.selectedMovieId,
+      movieId: this.state.movieId,
       date: this.state.selectedDate,
       weekDays: this.state.weekDays,
       reservationNumber: this.state.peopleCount,
