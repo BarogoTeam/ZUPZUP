@@ -22,24 +22,23 @@ class NewAlarmPage extends React.PureComponent {
       loaded: false,
       cinemas: [],
       selectedMovieId: null,
-      selectedScreens:[
-        {
-          cinemaName: '광명(광명사거리)',
-          screenNameKr: '3관',
-          screenDivisionNameKr: '4D',
-          screenId: '302703',
-          cinemaId: '3027',
-          startTime: "18:00"
-        },
-        {
-          cinemaName: '광명(광명사거리)',
-          screenNameKr: '5관',
-          screenDivisionNameKr: '3D',
-          screenId: '302705',
-          cinemaId: '3027',
-          startTime: "16:00"
-        }
-      ]
+      selectedScreens:[]
+        // {
+        //   cinemaName: '광명(광명사거리)',
+        //   screenNameKr: '3관',
+        //   screenDivisionNameKr: '4D',
+        //   screenId: '302703',
+        //   cinemaId: '3027',
+        //   startTime: "18:00"
+        // },
+        // {
+        //   cinemaName: '광명(광명사거리)',
+        //   screenNameKr: '5관',
+        //   screenDivisionNameKr: '3D',
+        //   screenId: '302705',
+        //   cinemaId: '3027',
+        //   startTime: "16:00"
+        // }
     }
   }
 
@@ -83,6 +82,34 @@ class NewAlarmPage extends React.PureComponent {
     })
   };
 
+  handleScreenChanged = (movieNameKr, screenNameKr, startTime, screenId, cinemaId, isSelected) => {
+    console.log("Here! parent")
+    let screen = {
+      movieNameKr,
+      screenNameKr,
+      startTime,
+      screenId,
+      cinemaId
+    }
+    if(isSelected) {
+      if(!this.state.selectedScreens.includes(screen)) {
+        let selectedScreens = this.state.selectedScreens;
+        selectedScreens.push(screen);
+
+        this.setState({
+          selectedScreens
+        })
+      }
+    } else {
+      let selectedScreens = this.state.selectedScreens.filter((selectedScreen) => {
+        return selectedScreen !== screen;
+      })
+      this.setState({
+        selectedScreens 
+      })
+    }
+    console.log(this.state.selectedScreens);
+  }
   handleLoaded = (loaded) => {
     this.setState({
       loaded
@@ -140,6 +167,7 @@ class NewAlarmPage extends React.PureComponent {
                 key={`${this.state.selectedDate},${this.state.selectedCinemas.join(',')}`}
                 alarmDate={this.state.selectedDate}
                 cinemas={this.state.selectedCinemas}
+                onScreenChanged={this.handleScreenChanged}
               />
             }
           </UI.Grid.Row>
