@@ -124,6 +124,12 @@ class NewAlarmPage extends React.PureComponent {
 
   postAlarm = () => {
     let body = {
+      /*screenId <- selectedScreens.
+        screenDivisionCode <- cinemas
+        cinemaId <- selectedScreens
+        playDate 이미 있고
+        playSequence
+      */
       movieId: this.state.selectedMovieId,
       date: this.state.selectedDate,
       weekDays: this.state.weekDays,
