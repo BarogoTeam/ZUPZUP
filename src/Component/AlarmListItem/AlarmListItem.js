@@ -12,8 +12,6 @@ class AlarmListItem extends React.PureComponent {
   toggleRunMode = () => this.setState({isRun: !this.state.isRun})
 
   render() {
-    //const weekDays = ['일', '월', '화', '수', '목', '금', '토']; TODO 요일설정은 나중에  by thesun.kim
-
     return (
       <UI.Grid.Column>
         <UI.Image fluid
@@ -24,22 +22,19 @@ class AlarmListItem extends React.PureComponent {
           </UI.Header>
           <UI.Item.Extra>
             <div>
-              {this.props.alarmInfo.cinemaNames.map((cinemaName) => <UI.Label key={cinemaName}>{cinemaName}</UI.Label>)}
+              {this.props.alarmInfo.sequences.map((sequence) => <UI.Label key={sequence.screenNameKr}>{sequence.screenNameKr}</UI.Label>)}
             </div>
             <div>
-              {this.props.alarmInfo.cinemaTypes.map((cinemaType) => <UI.Label key={cinemaType}>{cinemaType}관</UI.Label>)}
+              {this.props.alarmInfo.sequences.map((sequence) => <UI.Label key={sequence.screenDivisionNameKr}>{sequence.screenDivisionNameKr}관({sequence.filmNameKr})</UI.Label>)}
             </div>
             <div>
               <UI.Label tag color='black'><UI.Icon name={this.props.alarmInfo.reservationNumber === 1 ? "user" : "users"} />{this.props.alarmInfo.reservationNumber}</UI.Label>
-              <UI.Label tag color='teal'><UI.Icon name="calendar alternate outline" />{this.props.alarmInfo.date}</UI.Label>
+              <UI.Label tag color='teal'><UI.Icon name="calendar alternate outline" />{this.props.alarmInfo.playDate}</UI.Label>
             </div>
             <div>
-              <UI.Label tag color='blue'><UI.Icon name="check circle outline" />{this.props.alarmInfo.startTime}</UI.Label>
-              <UI.Label tag color='gray'><UI.Icon name="times circle outline" />{this.props.alarmInfo.endTime}</UI.Label>
+              {this.props.alarmInfo.sequences.map((sequence) => <UI.Label tag color='blue' key={sequence.startTime}>
+                <UI.Icon name="check circle outline" />{sequence.startTime} ~ {sequence.endTime}</UI.Label>)}
             </div>
-            {/*<div>
-              {this.props.alarmInfo.weekDays.map((day) => <UI.Label key={day}>{weekDays[day]}</UI.Label>)}
-            </div>*/}
             <div className="ui right floated">
               <UI.Checkbox toggle checked={this.state.isRun} onClick={this.toggleRunMode} />
             </div>
