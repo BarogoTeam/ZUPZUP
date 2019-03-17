@@ -9,29 +9,29 @@ import SeatLayout from "./SeatLayout";
 export default class SeatModal extends React.PureComponent {
   static propTypes = {
     selectedDate: PropTypes.string,
-    selectedScreens:PropTypes.arrayOf(PropTypes.object),
+    screenInfoList:PropTypes.arrayOf(PropTypes.object),
     onSeatsSelected: PropTypes.func,
   };
 
   static defaultProps = {
     selectedDate: null,
-    selectedScreens: null,
+    screenInfoList: null,
     selectedSeats: null,
   };
 
   constructor() {
     super();
     this.state = {
-      selectedScreens: null,
+      screenInfoList: null,
       selectedSeats: null,
     }
   }
 
   handleOpen = () => {
     this.setState({
-      selectedScreens: this.props.selectedScreens,
+      screenInfoList: this.props.screenInfoList,
       selectedRegion: null,
-      selectedSeats: this.props.selectedScreens.map(_ => [])
+      selectedSeats: this.props.screenInfoList.map(_ => [])
     })
   };
 
@@ -79,7 +79,7 @@ export default class SeatModal extends React.PureComponent {
         ]}
         content={<SeatContent onSeatsChanged={this.handleSeatsChanged}
                               selectedDate={this.props.selectedDate}
-                              selectedScreens={this.state.selectedScreens}
+                              screenInfoList={this.state.screenInfoList}
                               selectedSeats={[null]} />}
         onOpen={this.handleOpen}
         onActionClick={this.handleActionClick}
@@ -91,14 +91,14 @@ export default class SeatModal extends React.PureComponent {
 class SeatContent extends React.Component {
   static propTypes = {
     selectedDate: PropTypes.string,
-    selectedScreens: PropTypes.arrayOf(PropTypes.object),
+    screenInfoList: PropTypes.arrayOf(PropTypes.object),
     onSeatsChanged: PropTypes.func
   };
 
   static defaultProps = {
     selectedDate: null,
     selectedSeats: null,
-    selectedScreens: [],
+    screenInfoList: [],
   };
 
   constructor() {
@@ -117,8 +117,8 @@ class SeatContent extends React.Component {
   }
 
   componentDidMount() {
-    for(let page=0; page < this.props.selectedScreens.length; page++) {
-      const {cinemaId, screenId} = this.props.selectedScreens[page];
+    for(let page=0; page < this.props.screenInfoList.length; page++) {
+      const {cinemaId, screenId} = this.props.screenInfoList[page];
       AlarmService.getSeats(cinemaId, screenId, this.props.selectedDate).then((response) => {
         const newLoadState = ArrayClone(this.state.loaded);
         const newScreenLayouts = ArrayClone(this.state.screenLayouts);
@@ -136,13 +136,13 @@ class SeatContent extends React.Component {
 
   nextButtonClick() {
     this.setState({
-      screenPage: this.state.screenPage === this.props.selectedScreens.length - 1 ? 0 : this.state.screenPage + 1
+      screenPage: this.state.screenPage === this.props.screenInfoList.length - 1 ? 0 : this.state.screenPage + 1
     })
   }
 
   prevButtonClick() {
     this.setState({
-      screenPage: this.state.screenPage === 0 ? this.props.selectedScreens.length - 1 : this.state.screenPage - 1
+      screenPage: this.state.screenPage === 0 ? this.props.screenInfoList.length - 1 : this.state.screenPage - 1
     })
   }
 
@@ -155,7 +155,7 @@ class SeatContent extends React.Component {
               <UI.Button icon='angle left' floated='left' onClick={() => {this.prevButtonClick();}} />
             </UI.Grid.Column>
             <UI.Grid.Column width={12}>
-              <SeatLayout selectedScreens={this.props.selectedScreens[this.state.screenPage]}
+              <SeatLayout screenInfoList={this.props.screenInfoList[this.state.screenPage]}
                           screenLayouts={this.state.screenLayouts}
                           onSeatsChanged={this.props.onSeatsChanged}
                           screenPage={this.state.screenPage} />

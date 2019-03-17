@@ -22,7 +22,7 @@ class NewAlarmPage extends React.PureComponent {
       loaded: false,
       cinemas: [],
       movieId: null,
-      selectedScreens:[]
+      screenInfoList:[]
         // {
         //   cinemaName: '광명(광명사거리)',
         //   screenNameKr: '3관',
@@ -67,7 +67,11 @@ class NewAlarmPage extends React.PureComponent {
   handleCinemaChanged = (selectedCinemas) => {
     this.setState({
       selectedCinemas
-    })
+    });
+
+    if(this.state.selectedDate !== null) {
+      this.updateMovieScreens(selectedCinemas, this.state.selectedDate);
+    }
   };
 
   handlePeopleCountChanged = (peopleCount) => {
@@ -79,38 +83,49 @@ class NewAlarmPage extends React.PureComponent {
   handleAlarmDateChanged = (selectedDate) => {
     this.setState({
       selectedDate
+    });
+
+    if(this.state.selectedCinemas.length !== 0) {
+      this.updateMovieScreens(this.state.selectedCinemas, selectedDate);
+    }
+  };
+
+  updateMovieScreens = (selectedCinemas, selectedDate) => {
+    AlarmService.getScreens(selectedCinemas, selectedDate).then((screens) => {
+      return screens.map((screen) => {
+        return {
+          ...screen,
+          cinemaId: `${screen.screenId}`.substring(0, 4),
+        }
+      })
+    }).then((screens) => {
+      this.setState({
+        screenInfoList: screens
+      });
+
+    }).catch((e) => {
+      console.error('010-4486-3511');
+      alert('서버 오류입니다. 서비스 데스크로 문의해주세요.\n연락처: 010-4486-3511\n' + JSON.stringify(e));
     })
   };
 
-  handleScreenChanged = (movieId, movieNameKr, screenNameKr, startTime, endTime, screenId, cinemaId, playSequence, isSelected) => {
-    let screen = {
-      movieNameKr,
-      screenNameKr,
-      startTime,
-      endTime,
-      screenId,
-      cinemaId,
-      playSequence
-    }
-    if(isSelected) {
-      if(!this.state.selectedScreens.includes(screen)) {
-        let selectedScreens = this.state.selectedScreens;
-        selectedScreens.push(screen);
+  handleScreenChanged = (sequenceInfo) => {
+    let newScreenInfoList = this.state.screenInfoList.map((screenInfo) => {
+      if(screenInfo.screenId === sequenceInfo.screenId
+        && screenInfo.cinemaId === sequenceInfo.cinemaId
+        && screenInfo.playSequence === sequenceInfo.playSequence) {
 
-        this.setState({
-          movieId,
-          selectedScreens
-        })
+        screenInfo.isSelected = !screenInfo.isSelected;
       }
-    } else {
-      let selectedScreens = this.state.selectedScreens.filter((selectedScreen) => {
-        return selectedScreen !== screen;
-      })
-      this.setState({
-        movieId,
-        selectedScreens
-      })
-    }
+
+      return screenInfo;
+    })
+
+    this.setState({
+      movieId: sequenceInfo.movieId,
+      screenInfoList: newScreenInfoList
+    })
+
   }
   handleLoaded = (loaded) => {
     this.setState({
@@ -130,7 +145,9 @@ class NewAlarmPage extends React.PureComponent {
       date: this.state.selectedDate,
       weekDays: this.state.weekDays,
       reservationNumber: this.state.peopleCount,
-      alarms: this.state.selectedScreens.map((cinema, index) => Object.assign({}, cinema, {seatNoList: this.state.seats[index]}))
+      alarms: this.state.screenInfoList
+        .filter((screenInfo)=>{return screenInfo.isSelected})
+        .map((cinema, index) => Object.assign({}, cinema, {seatNoList: this.state.seats[index]}))
     };
 
     AlarmService.postAlarms(body);
@@ -167,8 +184,8 @@ class NewAlarmPage extends React.PureComponent {
             {this.state.selectedDate && !_.isEmpty(this.state.selectedCinemas) &&
               <Screens
                 key={`${this.state.selectedDate},${this.state.selectedCinemas.join(',')}`}
-                alarmDate={this.state.selectedDate}
                 cinemas={this.state.selectedCinemas}
+                screenInfoList={this.state.screenInfoList}
                 onScreenChanged={this.handleScreenChanged}
               />
             }
@@ -176,7 +193,7 @@ class NewAlarmPage extends React.PureComponent {
           <UI.Grid.Row>
             <SeatModal
               selectedDate={this.state.selectedDate}
-              selectedScreens={this.state.selectedScreens}
+              screenInfoList={this.state.screenInfoList.filter((screenInfo) => {return screenInfo.isSelected})}
               onSeatsSelected={this.handleSeatsSelected}
             />
           </UI.Grid.Row>

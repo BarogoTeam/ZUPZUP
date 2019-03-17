@@ -8,14 +8,14 @@ export default class SeatLayout extends React.Component {
     screenPage: PropTypes.number,
     onSeatsChanged: PropTypes.func,
     screenLayouts: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
-    selectedScreens: PropTypes.object
+    screenInfoList: PropTypes.object
   };
 
   static defaultProps = {
     screenPage: 0,
     selectedSeats: null,
     screenLayouts: null,
-    selectedScreens: null
+    screenInfoList: null
   };
 
   constructor() {
@@ -147,7 +147,7 @@ export default class SeatLayout extends React.Component {
                 width={(maxX - minX + seatList[0].seatXLength) / correction}
                 height={seatList[0].seatYLength / correction}
                 fill={'black'}
-                text={`${this.props.selectedScreens.cinemaName} ${this.props.selectedScreens.screenNameKr}`}
+                text={`${this.props.screenInfoList.cinemaName} ${this.props.screenInfoList.screenNameKr}`}
                 fontStyle={'bold'}
                 align={'center'} />
 
