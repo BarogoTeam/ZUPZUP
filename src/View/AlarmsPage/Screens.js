@@ -15,8 +15,8 @@ class MovieScreens extends React.PureComponent {
       .then(movie => this.setState({ movie }));
   }
 
-  onClick(sequenceInfo) {
-    this.props.onScreenChanged(sequenceInfo);
+  onClick(movieId, movieName, sequenceInfo) {
+    this.props.onScreenChanged(movieId, movieName, sequenceInfo);
   }
 
   render() {
@@ -34,7 +34,6 @@ class MovieScreens extends React.PureComponent {
             {screen.map(sequence => {
 
               let sequenceInfo = {
-                movieName: movie.movieNameKr,
                 screenName: screen[0].screenNameKr,
                 startTime: sequence.startTime,
                 endTime: sequence.endTime,
@@ -42,10 +41,10 @@ class MovieScreens extends React.PureComponent {
                 cinemaId: this.props.cinemaId,
                 playSequence: sequence.playSequence,
                 isSelected: sequence.isSelected
-              }
+              };
 
               return <UI.Label color={sequenceInfo.isSelected ? 'teal' : 'grey'} as='a' key={sequenceInfo.playSequence} onClick={() => {
-                this.props.movieCode, this.onClick(sequenceInfo)
+                this.onClick(this.props.movieCode, movie.movieNameKr, sequenceInfo)
               }}>
                 {sequenceInfo.startTime}
 

@@ -109,7 +109,7 @@ class NewAlarmPage extends React.PureComponent {
     })
   };
 
-  handleScreenChanged = (sequenceInfo) => {
+  handleScreenChanged = (movieId, movieNameKr, sequenceInfo) => {
     let newScreenInfoList = this.state.screenInfoList.map((screenInfo) => {
       if(screenInfo.screenId === sequenceInfo.screenId
         && screenInfo.cinemaId === sequenceInfo.cinemaId
@@ -122,7 +122,8 @@ class NewAlarmPage extends React.PureComponent {
     })
 
     this.setState({
-      movieId: sequenceInfo.movieId,
+      movieId,
+      movieNameKr,
       screenInfoList: newScreenInfoList
     })
 
@@ -141,13 +142,25 @@ class NewAlarmPage extends React.PureComponent {
 
   postAlarm = () => {
     let body = {
+      movieNameKr: this.state.movieNameKr,
       movieId: this.state.movieId,
-      date: this.state.selectedDate,
-      weekDays: this.state.weekDays,
+      playDate: this.state.selectedDate,
       reservationNumber: this.state.peopleCount,
-      alarms: this.state.screenInfoList
+      sequences: this.state.screenInfoList
         .filter((screenInfo)=>{return screenInfo.isSelected})
-        .map((cinema, index) => Object.assign({}, cinema, {seatNoList: this.state.seats[index]}))
+        .map((cinema, index) => {
+          return {
+            screenNameKr: cinema.screenNameKr,
+            startTime: cinema.startTime,
+            endTime: cinema.endTime,
+            screenId: cinema.screenId,
+            cinemaId: cinema.cinemaId,
+            screenDivisionNameKr: cinema.screenDivisionNameKr,
+            filmNameKr: cinema.filmNameKr,
+            playSequence: cinema.playSequence,
+            seatNoList: this.state.seats[index]
+          }
+        })
     };
 
     AlarmService.postAlarms(body);
