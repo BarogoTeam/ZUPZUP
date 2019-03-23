@@ -43,8 +43,10 @@ class MovieScreens extends React.PureComponent {
                 isSelected: sequence.isSelected
               };
 
-              return <UI.Label color={sequenceInfo.isSelected ? 'teal' : 'grey'} disabled={this.state.movieId !== this.props.movieCode} as='a' key={sequenceInfo.playSequence} onClick={() => {
-                this.onClick(this.props.movieCode, movie.movieNameKr, sequenceInfo)
+              return <UI.Label color={sequenceInfo.isSelected ? 'teal' : 'grey'} as='a' key={sequenceInfo.playSequence} onClick={() => {
+                if(!this.props.selectedMovieId || this.props.selectedMovieId === this.props.movieCode) {
+                  this.onClick(this.props.movieCode, movie.movieNameKr, sequenceInfo)
+                }
               }}>
                 {sequenceInfo.startTime}
 
@@ -84,7 +86,7 @@ export default class Screens extends React.PureComponent {
             <UI.Item.Header content={_.find(cinemas, ['code', _.toNumber(cinemaId)]).name}/>
             <UI.Item.Content>
               {_.map(movieScreens, (screens, movieCode) => (
-                <MovieScreens key={movieCode} movieCode={movieCode} screens={screens} cinemaId={cinemaId}
+                <MovieScreens key={movieCode} selectedMovieId={this.props.selectedMovieId} movieCode={movieCode} screens={screens} cinemaId={cinemaId}
                               onScreenChanged={this.props.onScreenChanged}/>
               ))}
             </UI.Item.Content>
