@@ -140,32 +140,31 @@ class NewAlarmPage extends React.PureComponent {
     })
   };
 
-  postAlarm = () => {
-    let body = {
-      movieNameKr: this.state.movieNameKr,
-      movieId: this.state.movieId,
-      playDate: this.state.selectedDate,
-      reservationNumber: this.state.peopleCount,
-      sequences: this.state.screenInfoList
-        .filter((screenInfo)=>{return screenInfo.isSelected})
-        .map((cinema, index) => {
-          return {
-            screenNameKr: cinema.screenNameKr,
-            startTime: cinema.startTime,
-            endTime: cinema.endTime,
-            screenId: cinema.screenId,
-            cinemaId: cinema.cinemaId,
-            screenDivisionNameKr: cinema.screenDivisionNameKr,
-            filmNameKr: cinema.filmNameKr,
-            playSequence: cinema.playSequence,
-            seatNoList: this.state.seats[index]
-          }
-        }),
-      isRun: true
-    };
-
-    AlarmService.postAlarms(body);
+  postAlarm = (alarm) => {
+    AlarmService.postAlarms(alarm);
   };
+
+  validateAlarm(alarm) {
+    if(!alarm.movieId) return Promise.reject("alarm.movieId");
+    if(!alarm.movieNameKr) return Promise.reject("alarm.movieNameKr");
+    if(!alarm.playDate) return Promise.reject("alarm.playDate");
+    if(!alarm.reservationNumber || alarm.reservationNumber === "0") return Promise.reject("alarm.reservationNumber");
+    if(!alarm.sequences) return Promise.reject("alarm.sequences");
+
+    for(let sequence of alarm.sequences) {
+      if(!sequence.screenNameKr) return Promise.reject("sequence.screenNameKr");
+      if(!sequence.startTime) return Promise.reject("sequence.startTime");
+      if(!sequence.endTime) return Promise.reject("sequence.endTime");
+      if(!sequence.screenId) return Promise.reject("sequence.screenId");
+      if(!sequence.cinemaId) return Promise.reject("sequence.cinemaId");
+      if(!sequence.screenDivisionNameKr) return Promise.reject("sequence.screenDivisionNameKr");
+      if(!sequence.filmNameKr) return Promise.reject("sequence.filmNameKr");
+      if(!sequence.playSequence) return Promise.reject("sequence.playSequence");
+      if(!sequence.seatNoList) return Promise.reject("sequence.seatNoList");
+    }
+
+    return Promise.resolve();
+  }
 
   render() {
     return (
@@ -212,7 +211,37 @@ class NewAlarmPage extends React.PureComponent {
             />
           </UI.Grid.Row>
           <UI.Grid.Row>
-            <UI.Button color="yellow" fluid circular onClick={() => {this.postAlarm()}}>
+            <UI.Button color="yellow" fluid circular onClick={() => {
+              let alarm = {
+                movieNameKr: this.state.movieNameKr,
+                movieId: this.state.movieId,
+                playDate: this.state.selectedDate,
+                reservationNumber: this.state.peopleCount,
+                sequences: this.state.screenInfoList
+                  .filter((screenInfo)=>{return screenInfo.isSelected})
+                  .map((cinema, index) => {
+                    return {
+                      screenNameKr: cinema.screenNameKr,
+                      startTime: cinema.startTime,
+                      endTime: cinema.endTime,
+                      screenId: cinema.screenId,
+                      cinemaId: cinema.cinemaId,
+                      screenDivisionNameKr: cinema.screenDivisionNameKr,
+                      filmNameKr: cinema.filmNameKr,
+                      playSequence: cinema.playSequence,
+                      seatNoList: this.state.seats[index]
+                    }
+                  }),
+                isRun: true
+              };
+
+              this.validateAlarm(alarm).then(() => {
+                console.log("Alarm is validated");
+                this.postAlarm(alarm)
+              }).catch((message) => {
+                console.log(message + " is not validated");
+              })
+            }}>
               <UI.Icon name='checkmark' /> 저장
             </UI.Button>
           </UI.Grid.Row>
