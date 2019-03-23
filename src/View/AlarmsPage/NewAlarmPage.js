@@ -22,6 +22,7 @@ class NewAlarmPage extends React.PureComponent {
       loaded: false,
       cinemas: [],
       movieId: null,
+      movieNameKr: null,
       screenInfoList:[]
         // {
         //   cinemaName: '광명(광명사거리)',
@@ -120,13 +121,16 @@ class NewAlarmPage extends React.PureComponent {
 
       return screenInfo;
     })
-
+    
+    let selectedScreenInfo = newScreenInfoList.find((screenInfo)=>{return screenInfo.isSelected});
+    movieId = selectedScreenInfo ? movieId : null;
+    movieNameKr =  movieId ? movieNameKr : null;
+    
     this.setState({
       movieId,
       movieNameKr,
       screenInfoList: newScreenInfoList
     })
-
   }
   handleLoaded = (loaded) => {
     this.setState({
@@ -199,6 +203,7 @@ class NewAlarmPage extends React.PureComponent {
                 key={`${this.state.selectedDate},${this.state.selectedCinemas.join(',')}`}
                 cinemas={this.state.selectedCinemas}
                 screenInfoList={this.state.screenInfoList}
+                selectedMovieId={this.state.movieId}
                 onScreenChanged={this.handleScreenChanged}
               />
             }

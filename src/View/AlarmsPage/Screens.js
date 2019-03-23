@@ -43,7 +43,7 @@ class MovieScreens extends React.PureComponent {
                 isSelected: sequence.isSelected
               };
 
-              return <UI.Label color={sequenceInfo.isSelected ? 'teal' : 'grey'} as='a' key={sequenceInfo.playSequence} onClick={() => {
+              return <UI.Label color={sequenceInfo.isSelected ? 'teal' : 'grey'} disabled={this.state.movieId !== this.props.movieCode} as='a' key={sequenceInfo.playSequence} onClick={() => {
                 this.onClick(this.props.movieCode, movie.movieNameKr, sequenceInfo)
               }}>
                 {sequenceInfo.startTime}
