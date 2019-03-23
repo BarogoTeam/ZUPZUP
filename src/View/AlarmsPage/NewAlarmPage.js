@@ -14,6 +14,7 @@ class NewAlarmPage extends React.PureComponent {
   constructor() {
     super();
     this.state = {
+      isAlarmPosted: false,
       peopleCount: null,
       selectedDate: null,
       weekDays: [1, 5, 6],
@@ -141,7 +142,12 @@ class NewAlarmPage extends React.PureComponent {
   };
 
   postAlarm = (alarm) => {
-    AlarmService.postAlarms(alarm);
+    AlarmService.postAlarms(alarm).then(() => {
+      console.log("Complete!");
+      this.setState({
+        isAlarmPosted: true
+      })
+    });
   };
 
   validateAlarm(alarm) {
@@ -167,6 +173,9 @@ class NewAlarmPage extends React.PureComponent {
   }
 
   render() {
+    if(this.state.isAlarmPosted) {
+      return <Redirect to="/alarms" />
+    }
     return (
       <UI.Container>
         {!localStorage.getItem("token") && <Redirect to="/" />}
