@@ -147,7 +147,7 @@ class SeatContent extends React.Component {
   }
 
   drawSeats() {
-    if(this.state.loaded[this.state.screenPage]) {
+    if(this.state.loaded.length === this.props.screenInfoList.length && this.state.loaded.every(loaded => loaded)) {
       return (
         <UI.Segment basic>
           <UI.Grid columns={3}>
