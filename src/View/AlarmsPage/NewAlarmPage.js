@@ -158,10 +158,10 @@ class NewAlarmPage extends React.PureComponent {
             screenDivisionNameKr: cinema.screenDivisionNameKr,
             filmNameKr: cinema.filmNameKr,
             playSequence: cinema.playSequence,
-            seatNoList: this.state.seats[index],
-            isRun: true
+            seatNoList: this.state.seats[index]
           }
-        })
+        }),
+      isRun: true
     };
 
     AlarmService.postAlarms(body);
