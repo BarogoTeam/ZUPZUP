@@ -180,9 +180,16 @@ class NewAlarmPage extends React.PureComponent {
     if(this.state.isAlarmPosted) {
       return <Redirect to="/alarms" />
     }
+
+    if(!sessionStorage.getItem("token")) {
+      let savedId = localStorage.getItem("chatId");
+      return savedId ?
+        <Redirect to={"/signin/?chatId=" + savedId} /> :
+        <Redirect to={"/signin"} />
+    }
+
     return (
       <UI.Container>
-        {!sessionStorage.getItem("token") && <Redirect to="/" />}
         <UI.Dimmer active={!this.state.loaded}>
           <UI.Loader>Loading</UI.Loader>
         </UI.Dimmer>
