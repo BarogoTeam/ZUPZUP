@@ -58,7 +58,7 @@ export default class SignInPage extends React.Component {
           </UI.Form.Field>
           <UI.Form.Field>
             <UI.ButtonGroup attached='bottom' widths='2'>
-              <UI.Button floated='left'>Join</UI.Button>
+              <UI.Button floated='left' as={'a'} href={'https://t.me/Zup_Zup_Bot'} target={"_blank"}>Join</UI.Button>
               <UI.Button floated='right'>Find ID/PW</UI.Button>
             </UI.ButtonGroup>
           </UI.Form.Field>
