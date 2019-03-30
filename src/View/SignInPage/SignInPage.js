@@ -8,7 +8,7 @@ export default class SignInPage extends React.Component {
     super();
     this.state = {
       chatId: "",
-      isSigned: localStorage.getItem("token"),
+      isSigned: sessionStorage.getItem("token"),
       password: 'examplepassword'
     }
   }
@@ -20,7 +20,7 @@ export default class SignInPage extends React.Component {
   onSignInClick(email, password) {
     console.log(email, password);
     SignInService.signIn(email, password).then((token) => {
-      localStorage.setItem("token", token);
+      sessionStorage.setItem("token", token);
       console.log("SignIn Success");
       this.setState({isSigned: true});
     }).catch((e) => {

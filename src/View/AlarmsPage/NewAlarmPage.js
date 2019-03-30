@@ -182,7 +182,7 @@ class NewAlarmPage extends React.PureComponent {
     }
     return (
       <UI.Container>
-        {!localStorage.getItem("token") && <Redirect to="/" />}
+        {!sessionStorage.getItem("token") && <Redirect to="/" />}
         <UI.Dimmer active={!this.state.loaded}>
           <UI.Loader>Loading</UI.Loader>
         </UI.Dimmer>

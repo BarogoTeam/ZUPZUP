@@ -52,7 +52,7 @@ class MoviesPage extends React.Component {
   render() {
     return (
       <UI.Form>
-        {!localStorage.getItem("token") && <Redirect to="/" />}
+        {!sessionStorage.getItem("token") && <Redirect to="/" />}
         {this.drawScreenMovies()};
       </UI.Form>
     );

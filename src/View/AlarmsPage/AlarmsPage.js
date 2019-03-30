@@ -23,7 +23,7 @@ class AlarmsPage extends React.PureComponent {
   }
 
   render() {
-    if(!localStorage.getItem("token")) {
+    if(!sessionStorage.getItem("token")) {
       return (<Redirect to="/" />)
     }
 
