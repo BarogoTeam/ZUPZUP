@@ -2,7 +2,7 @@
 export function Header() {
   const Header = new Headers();
   Header.append("Content-Type", "application/json");
-  Header.append("authorization", "Bearer " + localStorage.getItem("token"));
+  Header.append("authorization", "Bearer " + sessionStorage.getItem("token"));
   return Header;
 }
 

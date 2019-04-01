@@ -23,35 +23,39 @@ class AlarmsPage extends React.PureComponent {
   }
 
   render() {
-    if(!localStorage.getItem("token")) {
-      return (<Redirect to="/" />)
+    if(!sessionStorage.getItem("token")) {
+      let savedId = localStorage.getItem("chatId");
+      return savedId ?
+        <Redirect to={"/signin/?chatId=" + savedId} /> :
+        <Redirect to={"/signin"} />
     }
 
-    if(this.state.loaded) {
-      return (
-        <div>
-          <UI.Grid columns={2}>
-            {
-              this.state.alarms.map((alarmInfo) =>
-                <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} />
-              )
-            }
-          </UI.Grid>
-          <Link to="/alarms/new">
-            <UI.Button fluid basic>
-              <UI.Icon name="plus" />
-            </UI.Button>
-          </Link>
-        </div>
-      );
-    } else {
+    if(!this.state.loaded) {
       return (
         <div style={{height: "400px"}}>
           <UI.Dimmer inverted active={true}>
             <UI.Loader>Loading</UI.Loader>
           </UI.Dimmer>
-        </div>)
+        </div>
+      )
     }
+
+    return (
+      <div>
+        <UI.Grid columns={2}>
+          {
+            this.state.alarms.map((alarmInfo) =>
+              <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} />
+            )
+          }
+        </UI.Grid>
+        <Link to="/alarms/new">
+          <UI.Button fluid basic>
+            <UI.Icon name="plus" />
+          </UI.Button>
+        </Link>
+      </div>
+    );
   }
 }
 

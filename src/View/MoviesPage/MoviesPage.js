@@ -23,39 +23,44 @@ class MoviesPage extends React.Component {
       })
     })
   }
-  drawScreenMovies() {
-    if(this.state.loaded) {
-      const screenMovies = this.state.screenMovies;
+
+  render() {
+    if(!sessionStorage.getItem("token")) {
+      let savedId = localStorage.getItem("chatId");
+      return savedId ?
+        <Redirect to={"/signin/?chatId=" + savedId} /> :
+        <Redirect to={"/signin"} />
+    }
+
+    if(!this.state.loaded) {
       return (
+        <UI.Form>
+          <div style={{height: "400px"}}>
+            <UI.Dimmer inverted active={true}>
+              <UI.Loader>Loading</UI.Loader>
+            </UI.Dimmer>
+          </div>
+        </UI.Form>
+      );
+    }
+
+    const screenMovies = this.state.screenMovies;
+
+    return (
+      <UI.Form>
         <div>
           <UI.Grid columns={2}>
             {
               screenMovies.filter((movieInfo) => {
                 return movieInfo.representationMovieCode !== "AD"
               }).map((movieInfo) =>
-                <ScreenMoviesItem key={movieInfo.representationMovieCode} movieInfo={movieInfo} />
+                <ScreenMoviesItem key={movieInfo.representationMovieCode} movieInfo={movieInfo}/>
               )
             }
           </UI.Grid>
         </div>
-      );
-    } else {
-      return (
-        <div style={{height: "400px"}}>
-          <UI.Dimmer inverted active={true}>
-            <UI.Loader>Loading</UI.Loader>
-          </UI.Dimmer>
-        </div>)
-    }
-  }
-
-  render() {
-    return (
-      <UI.Form>
-        {!localStorage.getItem("token") && <Redirect to="/" />}
-        {this.drawScreenMovies()};
       </UI.Form>
-    );
+    )
   }
 }
 export default MoviesPage;
