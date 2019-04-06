@@ -22,18 +22,12 @@ class AlarmListItem extends React.PureComponent {
           </UI.Header>
           <UI.Item.Extra>
             <div>
-              {this.props.alarmInfo.sequences.map((sequence, index) => <UI.Label key={index}>{sequence.screenNameKr}</UI.Label>)}
-            </div>
-            <div>
-              {this.props.alarmInfo.sequences.map((sequence, index) => <UI.Label key={index}>{sequence.screenDivisionNameKr}관({sequence.filmNameKr})</UI.Label>)}
-            </div>
-            <div>
               <UI.Label tag color='black'><UI.Icon name={this.props.alarmInfo.reservationNumber === 1 ? "user" : "users"} />{this.props.alarmInfo.reservationNumber}</UI.Label>
               <UI.Label tag color='teal'><UI.Icon name="calendar alternate outline" />{this.props.alarmInfo.playDate}</UI.Label>
             </div>
             <div>
-              {this.props.alarmInfo.sequences.map((sequence) => <UI.Label tag color='blue' key={sequence.startTime}>
-                <UI.Icon name="check circle outline" />{sequence.startTime} ~ {sequence.endTime}</UI.Label>)}
+              {this.props.alarmInfo.sequences.map((sequence, index) => <UI.Label tag color='blue' key={index}>
+                <UI.Icon name="check circle outline" />{sequence.screenNameKr}<br/>{sequence.screenDivisionNameKr}<br/>{sequence.startTime} ~ {sequence.endTime}</UI.Label>)}
             </div>
             <div className="ui right floated">
               <UI.Checkbox toggle checked={this.state.isRun} onClick={this.toggleRunMode} />
