@@ -16,7 +16,7 @@ class AlarmsPage extends React.PureComponent {
   componentDidMount() {
     AlarmService.getAlarms().then((alarms)=> {
       this.setState({
-        alarms,
+        alarms: alarms,
         loaded: true
       });
     });
@@ -45,7 +45,7 @@ class AlarmsPage extends React.PureComponent {
         <UI.Grid columns={2}>
           {
             this.state.alarms.map((alarmInfo) =>
-              <AlarmListItem key={alarmInfo.name} alarmInfo={alarmInfo} />
+              <AlarmListItem key={alarmInfo._id} alarmInfo={alarmInfo} />
             )
           }
         </UI.Grid>

@@ -16,16 +16,16 @@ class AlarmListItem extends React.PureComponent {
       <UI.Grid.Column>
         <UI.Image fluid
                        label={{ as: 'a', color: 'red', content: '롯데시네마', ribbon: true}}
-                       disabled={!this.state.isRun} size='large' src={this.props.alarmInfo.img} />
+                       disabled={!this.state.isRun} src={this.props.alarmInfo.img} />
         <UI.Item.Content>
           <UI.Header size='large'><UI.Header.Subheader><br/></UI.Header.Subheader>{this.props.alarmInfo.name}
           </UI.Header>
           <UI.Item.Extra>
             <div>
-              {this.props.alarmInfo.sequences.map((sequence) => <UI.Label key={sequence.screenNameKr}>{sequence.screenNameKr}</UI.Label>)}
+              {this.props.alarmInfo.sequences.map((sequence, index) => <UI.Label key={index}>{sequence.screenNameKr}</UI.Label>)}
             </div>
             <div>
-              {this.props.alarmInfo.sequences.map((sequence) => <UI.Label key={sequence.screenDivisionNameKr}>{sequence.screenDivisionNameKr}관({sequence.filmNameKr})</UI.Label>)}
+              {this.props.alarmInfo.sequences.map((sequence, index) => <UI.Label key={index}>{sequence.screenDivisionNameKr}관({sequence.filmNameKr})</UI.Label>)}
             </div>
             <div>
               <UI.Label tag color='black'><UI.Icon name={this.props.alarmInfo.reservationNumber === 1 ? "user" : "users"} />{this.props.alarmInfo.reservationNumber}</UI.Label>
